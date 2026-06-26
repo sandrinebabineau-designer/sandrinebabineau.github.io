@@ -40,7 +40,7 @@
     body {
       background-color: var(--noir);
       color: var(--blanc);
-      font-family: 'Inter', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif;
       font-size: 16px;
       line-height: 1.5;
     }
@@ -137,16 +137,16 @@
 
     .bio .accroche {
       /* SF Pro est la police système Apple — fonctionne sur Mac/iPhone automatiquement */
-      font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
       font-size: 35px;      /* 35pt Figma = 35px CSS */
-      font-weight: 500;     /* medium */
+      font-weight: 300;     /* light */
       line-height: 1.4;
       margin-bottom: 32px;
     }
 
     .bio .accroche strong {
       color: #C0A77C;       /* beige pour "Designer UX/UI" */
-      font-weight: 500;
+      font-weight: 300;
     }
 
     /* =============================================
@@ -186,7 +186,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-family: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
       font-size: 35px;
       font-weight: 500; /* medium */
       color: var(--blanc);
@@ -219,14 +219,14 @@
     }
 
     .overlay .projet-titre {
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
       font-size: 30px;
       font-weight: 500; /* medium */
       margin-bottom: 14px;
     }
 
     .overlay .projet-desc {
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
       font-size: 20px;
       font-weight: 300; /* light */
       line-height: 1.4;
@@ -243,7 +243,7 @@
     .tag {
       padding: 8px 20px;
       border-radius: 999px;
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
       font-size: 16px;
       font-weight: 500;
       color: #FFFFFF;
@@ -284,10 +284,7 @@
       grid-row: 2;
     }
 
-    /* Couleurs temporaires des placeholders en attendant les vraies images */
-    .projet-1 .image-fond { background: linear-gradient(135deg, #1a2a3a, #2d4a6a); }
-    .projet-2 .image-fond { background: linear-gradient(135deg, #3a1a1a, #6a2a2a); }
-    .projet-3 .image-fond { background: linear-gradient(135deg, #2a2a2a, #4a4a4a); }
+
 
     /* =============================================
        SECTION À PROPOS — carte orange
@@ -309,7 +306,7 @@
     }
 
     .carte-apropos .texte-bio {
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
       font-size: 20px;
       font-weight: 400; /* regular */
       line-height: 1.5;
@@ -321,7 +318,7 @@
 
     .carte-apropos .services {
       text-align: right;
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
       align-self: end;
     }
 
@@ -360,7 +357,7 @@
 
     /* Colonne gauche : coordonnées poussées en bas */
     .carte-contact .coordonnees {
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
       font-size: 20px;
       font-weight: 400; /* regular */
       line-height: 1.7;
@@ -372,7 +369,7 @@
     /* Colonne droite : message en haut, liens en bas */
     .carte-contact .message {
       text-align: right;
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
       font-weight: 400; /* regular */
       display: flex;
       flex-direction: column;
@@ -392,7 +389,7 @@
     }
 
     .carte-contact .liens-contact a {
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
       font-size: 20px;
       text-decoration: underline;
       display: flex;
@@ -427,26 +424,29 @@
        ============================================= */
     #btn-haut {
       position: fixed;
-      bottom: 32px;
-      right: 32px;
-      width: 48px;
-      height: 48px;
+      bottom: 40px;
+      right: 40px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
-      background-color: var(--blanc);
-      color: var(--noir);
+      background-color: #C0A77C;
       border: none;
       cursor: pointer;
-      font-size: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 100;
     }
 
-    #btn-haut:hover {
-      transform: translateY(-3px);
+    #btn-haut.visible {
+      opacity: 1;
+      pointer-events: all;
     }
+
+    #btn-haut:hover { opacity: 0.85; }
 
   </style>
 </head>
@@ -620,7 +620,9 @@
        BOUTON RETOUR EN HAUT
        ========================================== -->
   <button id="btn-haut" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" title="Retour en haut">
-    ↑
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M10 16V4M4 10l6-6 6 6" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
   </button>
 
   <!-- ==========================================
@@ -647,6 +649,12 @@
     // On cible tous les éléments avec la classe .reveal
     document.querySelectorAll('.reveal').forEach((el) => {
       observateur.observe(el);
+    });
+
+    // Bouton retour en haut
+    const btnHaut = document.getElementById('btn-haut');
+    window.addEventListener('scroll', () => {
+      btnHaut.classList.toggle('visible', window.scrollY > 400);
     });
   </script>
 
