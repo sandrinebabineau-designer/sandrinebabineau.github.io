@@ -1,0 +1,53 @@
+NOTES DE PROJET — Portfolio Sandrine Babineau
+==============================================
+
+FICHIERS PRINCIPAUX
+- index.html        : page d'accueil (déjà créée)
+- apropos.html      : page À propos (en cours)
+
+SYSTÈME DE DESIGN
+- Fond : #000000 (noir)
+- Texte : #FFFFFF (blanc)
+- Rose : #E92B61
+- Beige : #C0A77C
+- Orange : #EF891C
+- Jaune : #EDFB86
+- Padding général : 48px
+- Max-width sections : 1100px
+
+TYPOGRAPHIE
+- H1 (À propos de moi) : SF Pro Display, 64px, weight 400
+- H2/H3 (titres sections) : SF Pro Display, 36px, weight 400
+- Texte courant + boutons : SF Pro Text, 20px, weight 400
+- Navigation : SF Pro Text, 14px, weight 500 (nom) / 400 (liens)
+- Font stack CSS : -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif
+
+NAVIGATION (identique sur toutes les pages)
+- "Sandrine Babineau" → lien vers index.html
+- Liens : À propos | Projets | Contact
+
+FLEURS — MÉTHODE DE PLACEMENT
+- On place une fleur à la fois avec les mesures exactes de Figma
+- Ne jamais placer aléatoirement — toujours demander les mesures à Sandrine
+- Figma canvas 1440px, padding 120px → contenu 1200px
+- HTML max-width 1100px, padding 48px → contenu 1004px
+- Facteur d'échelle : 1004/1200 ≈ 0.837
+
+FLEURS PLACÉES — apropos.html
+1. apropos-1.svg (52×91px) → section-hero : top: 69px; left: -10px
+2. apropos-2.svg (59×58px) → section-hero : top: 24px; left: 494px
+3. audelà.svg (53×67px)   → section-galerie : top: 107px; left: 18px
+   (section-galerie a padding-top: 153px pour espacer les fleurs du titre)
+
+FLEURS À PLACER
+- contact.svg (55×50px) → section contact "Curieux d'en savoir plus ?"
+  → En attente des mesures Figma de Sandrine
+
+IMAGES
+- images/apropos/ : portrait.png, dessin1-3.png, florence.png, barcelone.png, amsterdam.png
+- images/fleurs/  : apropos-1.svg, apropos-2.svg, audelà.svg, contact.svg, fleur-orange.svg
+
+À FAIRE
+- Placer contact.svg (mesures Figma requises)
+- Lier le bouton CV à un vrai PDF (quand Sandrine l'aura)
+- Créer les autres pages du portfolio si nécessaire

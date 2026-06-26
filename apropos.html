@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>À propos — Sandrine Babineau</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --noir:   #000000;
+      --blanc:  #FFFFFF;
+      --beige:  #C0A77C;
+      --rose:   #E92B61;
+      --orange: #EF891C;
+      --jaune:  #EDFB86;
+      --violet: #BF0BD7;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--noir);
+      color: var(--blanc);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif;
+      line-height: 1.5;
+    }
+
+    a { color: var(--blanc); text-decoration: none; }
+
+    /* =============================================
+       NAVIGATION
+       ============================================= */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    nav .nom {
+      font-size: 14px;
+      font-weight: 500;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    }
+
+    nav .liens {
+      display: flex;
+      gap: 40px;
+      font-size: 14px;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    }
+
+    nav .liens a:hover { text-decoration: underline; }
+
+    /* =============================================
+       SECTION HERO — titre + portrait + bio
+       ============================================= */
+    .section-hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 48px 80px;
+      position: relative;
+    }
+
+    .titre-page {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+      font-size: 64px;
+      font-weight: 400;
+      color: var(--blanc);
+      margin-bottom: 56px;
+      line-height: 1.1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-contenu {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .portrait-wrapper {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    .portrait-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .bio-texte {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding-top: 8px;
+    }
+
+    .bio-texte p {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--blanc);
+    }
+
+    .btn-cv {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--rose);
+      color: var(--blanc);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      padding: 10px 20px;
+      border-radius: 12px;
+      text-decoration: underline;
+      transition: opacity 0.2s ease;
+      align-self: flex-start;
+      margin-top: 16px;
+    }
+
+    .btn-cv:hover { opacity: 0.85; }
+
+    /* =============================================
+       DÉCORATION — fleurs positionnées
+       ============================================= */
+    .deco {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      line-height: 0;
+    }
+
+    /* =============================================
+       SECTION GALERIE
+       ============================================= */
+    .section-galerie {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 153px 48px 80px; /* 37 (haut fleurs) + 67 (hauteur SVG) + 49 (gap titre) */
+      position: relative;
+    }
+
+    .section-galerie .titre-section {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--beige);
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-galerie .desc-section {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--blanc);
+      margin-bottom: 48px;
+      max-width: 800px;
+    }
+
+    .grille-photos {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .rangee-photos {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+    }
+
+    .photo-item {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cadre-photo {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 4px;
+      background-color: #111;
+    }
+
+    .cadre-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .legende {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--blanc);
+    }
+
+    /* =============================================
+       SECTION CONTACT
+       ============================================= */
+    .section-contact {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 48px 120px;
+      position: relative;
+    }
+
+    .titre-contact {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--blanc);
+      margin-bottom: 24px;
+    }
+
+    .ligne-separatrice {
+      width: 100%;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.3);
+      margin-bottom: 24px;
+    }
+
+    .coordonnees {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--blanc);
+    }
+
+    .coordonnees a:hover { text-decoration: underline; }
+
+    /* =============================================
+       BOUTON RETOUR EN HAUT
+       ============================================= */
+    .btn-top {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      width: 52px;
+      height: 52px;
+      background-color: var(--rose);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+    }
+
+    .btn-top.visible { opacity: 1; pointer-events: all; }
+
+    /* =============================================
+       ANIMATIONS
+       ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <!-- ============ NAVIGATION ============ -->
+  <nav>
+    <a href="index.html" class="nom">Sandrine Babineau</a>
+    <div class="liens">
+      <a href="apropos.html">À propos</a>
+      <a href="index.html#projets">Projets</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="section-hero">
+
+    <!-- Fleurs gauche : bord droit à 6.23px du "À", haut à 26.5px du haut du titre -->
+    <span class="deco" style="top: 69px; left: -10px;">
+      <img src="images/fleurs/apropos-1.svg" width="52" height="91" alt="" />
+    </span>
+
+    <!-- Fleurs droite : 469.58px du bord gauche du titre, hauteur 58.5px -->
+    <span class="deco" style="top: 24px; left: 494px;">
+      <img src="images/fleurs/apropos-2.svg" width="59" height="58" alt="" />
+    </span>
+
+    <h1 class="titre-page reveal">À propos de moi</h1>
+
+    <div class="hero-contenu">
+      <div class="portrait-wrapper reveal">
+        <img src="images/apropos/portrait.png" alt="Portrait de Sandrine Babineau" />
+      </div>
+
+      <div class="bio-texte reveal">
+        <p>Si je suis nouvellement diplômée en design d'interaction, mon intérêt pour le design, lui, remonte à toujours.</p>
+        <p>Avec un parcours en administration des affaires, en marketing et en ressources humaines, mon cheminement est plus atypique, mais surtout complémentaire. Il m'a permis de découvrir le monde des affaires et, surtout, de réaliser l'importance de mettre ma créativité de l'avant dans différents projets.</p>
+        <p>Aujourd'hui, je souhaite concevoir des expériences qui font du sens, autant pour les utilisateurs que pour les organisations, là où je peux combiner ma capacité à créer, à résoudre des problèmes et à me mettre à la place des autres.</p>
+        <a href="#" class="btn-cv">Mon Curriculum Vitae ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GALERIE ============ -->
+  <section class="section-galerie">
+
+    <!-- Fleurs Au-delà : top 37px depuis le haut de la section, left aligné au contenu -->
+    <span class="deco" style="top: 107px; left: 18px;">
+      <img src="images/fleurs/audelà.svg" width="53" height="67" alt="" />
+    </span>
+
+    <h2 class="titre-section reveal">Au-delà du design</h2>
+    <p class="desc-section reveal">Lorsque je ne suis pas devant mon ordinateur, je passe mon temps à dessiner, à découvrir le monde, à méditer et à profiter de chaque occasion pour déguster une bonne bouffe.</p>
+
+    <div class="grille-photos">
+
+      <!-- Rangée 1 — dessins -->
+      <div class="rangee-photos">
+        <div class="photo-item reveal">
+          <div class="cadre-photo">
+            <img src="images/apropos/dessin1.png" alt="Dessin 1" />
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <div class="cadre-photo">
+            <img src="images/apropos/dessin2.png" alt="Dessin 2" />
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <div class="cadre-photo">
+            <img src="images/apropos/dessin3.png" alt="Dessin 3" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Rangée 2 — voyages -->
+      <div class="rangee-photos">
+        <div class="photo-item reveal">
+          <div class="cadre-photo">
+            <img src="images/apropos/florence.png" alt="Florence, Italie" />
+          </div>
+          <span class="legende">Florence, Italie</span>
+        </div>
+        <div class="photo-item reveal">
+          <div class="cadre-photo">
+            <img src="images/apropos/barcelone.png" alt="Barcelone, Espagne" />
+          </div>
+          <span class="legende">Barcelone, Espagne</span>
+        </div>
+        <div class="photo-item reveal">
+          <div class="cadre-photo">
+            <img src="images/apropos/amsterdam.png" alt="Amsterdam, Pays-Bas" />
+          </div>
+          <span class="legende">Amsterdam, Pays-Bas</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="section-contact">
+
+    <h2 class="titre-contact reveal">Curieux d'en savoir plus ?</h2>
+    <div class="ligne-separatrice"></div>
+    <p class="coordonnees reveal">
+      <a href="mailto:sandrine.babineau@videotron.ca">sandrine.babineau@videotron.ca</a>
+      &nbsp;|&nbsp;
+      (418) 956-3771
+    </p>
+  </section>
+
+  <!-- ============ BOUTON RETOUR EN HAUT ============ -->
+  <button class="btn-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M10 16V4M4 10l6-6 6 6" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Bouton retour en haut
+    const btnTop = document.getElementById('btnTop');
+    window.addEventListener('scroll', () => {
+      btnTop.classList.toggle('visible', window.scrollY > 400);
+    });
+  </script>
+
+</body>
+</html>

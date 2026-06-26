@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sandrine Babineau — Designer UX/UI</title>
+
+  <!-- Police Inter depuis Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       VARIABLES — les couleurs du design
+       ============================================= */
+    :root {
+      --noir:        #000000;
+      --blanc:       #FFFFFF;
+      --accent:      #EDFB86;   /* jaune : "l'expérience" */
+      --or:          #EDFB86;   /* jaune : "Designer UX/UI" */
+      --orange:      #EF891C;   /* carte À propos */
+      --rose:        #E92B61;   /* carte Contact */
+      --tag-rose:    #E92B61;
+      --tag-bleu:    #7DB5E8;
+      --tag-orange:  #E8943A;
+      --tag-vert:    #5CC982;
+      --tag-violet:  #BF0BD7;
+    }
+
+    /* =============================================
+       BASE — réinitialisation et styles globaux
+       ============================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--noir);
+      color: var(--blanc);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--blanc);
+      text-decoration: none;
+    }
+
+    /* =============================================
+       NAVIGATION
+       ============================================= */
+    /* Conteneur centré avec marges latérales généreuses */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 64px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    nav .nom {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    nav .liens {
+      display: flex;
+      gap: 40px;
+      font-size: 14px;
+    }
+
+    nav .liens a:hover {
+      text-decoration: underline;
+    }
+
+    /* =============================================
+       HERO — grand titre
+       ============================================= */
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 160px 48px 160px; /* 160px en haut et en bas */
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5.2vw, 72px); /* réduit pour tenir dans les marges */
+      font-weight: 632;
+      text-transform: uppercase;
+      white-space: nowrap;
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .hero .sous-titre {
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 400;
+    }
+
+    .hero .sous-titre span {
+      font-style: normal; /* pas d'italique */
+      transition: color 0.2s ease;
+    }
+
+    /* =============================================
+       SECTION PRINCIPALE — bio + projets
+       ============================================= */
+    .section-principale {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 480px;
+      gap: 48px;                       /* 48px partout entre les cellules */
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 48px;           /* 48px de marge latérale */
+    }
+
+    /* Bio text — colonne gauche, rangée 1 */
+    .bio {
+      grid-column: 1;
+      grid-row: 1;
+      padding: 0 32px 0 0;
+      display: flex;
+      align-items: flex-start; /* texte aligné en haut */
+    }
+
+    .bio .accroche {
+      /* SF Pro est la police système Apple — fonctionne sur Mac/iPhone automatiquement */
+      font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 35px;      /* 35pt Figma = 35px CSS */
+      font-weight: 500;     /* medium */
+      line-height: 1.4;
+      margin-bottom: 32px;
+    }
+
+    .bio .accroche strong {
+      color: #C0A77C;       /* beige pour "Designer UX/UI" */
+      font-weight: 500;
+    }
+
+    /* =============================================
+       CARTES PROJETS
+       ============================================= */
+    .carte-projet {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      width: 100%;
+      height: 100%; /* s'étire pour remplir la hauteur de sa rangée */
+    }
+
+    /* Image de fond de la carte */
+    .carte-projet .image-fond {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    /* Quand aucune image n'est disponible, on utilise une couleur */
+    .carte-projet .image-fond.placeholder {
+      background-color: #1a1a2e; /* couleur temporaire */
+      height: 100%;
+    }
+
+    /* Étiquette "Projet X" visible par défaut en bas */
+    /* Barre du bas — toujours visible, au-dessus de l'overlay */
+    .carte-projet .etiquette {
+      position: absolute;
+      bottom: 20px;
+      left: 24px;
+      right: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 35px;
+      font-weight: 500; /* medium */
+      color: var(--blanc);
+      z-index: 4;
+    }
+
+    /* Flèche cachée par défaut, visible au survol */
+    .carte-projet .etiquette svg {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .carte-projet:hover .etiquette svg {
+      opacity: 1;
+    }
+
+    /* Overlay qui apparaît au survol */
+    .carte-projet .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      border-radius: 16px;
+      padding: 24px 24px 64px; /* espace en bas pour ne pas couvrir l'étiquette */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      z-index: 3;
+    }
+
+    .overlay .projet-titre {
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 30px;
+      font-weight: 500; /* medium */
+      margin-bottom: 14px;
+    }
+
+    .overlay .projet-desc {
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 20px;
+      font-weight: 300; /* light */
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    .overlay .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Badges — tous en texte blanc */
+    .tag {
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: #FFFFFF;
+    }
+
+    .tag.rose   { background-color: var(--tag-rose); }
+    .tag.bleu   { background-color: var(--tag-bleu); }
+    .tag.orange { background-color: var(--tag-orange); }
+    .tag.vert   { background-color: var(--tag-vert); }
+    .tag.violet { background-color: var(--tag-violet); }
+
+    /* HOVER : affiche l'overlay, l'étiquette reste visible */
+    .carte-projet:hover .overlay {
+      opacity: 1;
+    }
+
+    .carte-projet:hover .image-fond {
+      transform: scale(1.04);
+    }
+
+    .carte-projet:hover .image-fond {
+      transform: scale(1.04); /* léger zoom sur l'image */
+    }
+
+    /* Placement des cartes dans la grille */
+    .projet-1 {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .projet-2 {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .projet-3 {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    /* Couleurs temporaires des placeholders en attendant les vraies images */
+    .projet-1 .image-fond { background: linear-gradient(135deg, #1a2a3a, #2d4a6a); }
+    .projet-2 .image-fond { background: linear-gradient(135deg, #3a1a1a, #6a2a2a); }
+    .projet-3 .image-fond { background: linear-gradient(135deg, #2a2a2a, #4a4a4a); }
+
+    /* =============================================
+       SECTION À PROPOS — carte orange
+       ============================================= */
+    .section-apropos {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 48px;
+    }
+
+    .carte-apropos {
+      background-color: var(--orange);
+      border-radius: 20px;
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 3fr 2fr; /* fr = unités flexibles qui respectent le padding et le gap */
+      gap: 48px;
+      align-items: start;
+    }
+
+    .carte-apropos .texte-bio {
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 20px;
+      font-weight: 400; /* regular */
+      line-height: 1.5;
+    }
+
+    .carte-apropos .texte-bio p + p {
+      margin-top: 24px;
+    }
+
+    .carte-apropos .services {
+      text-align: right;
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      align-self: end;
+    }
+
+    .carte-apropos .services h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .carte-apropos .services ul {
+      list-style: none;
+      font-size: 20px;
+      font-weight: 300; /* light */
+      line-height: 1.8;
+    }
+
+    /* =============================================
+       SECTION CONTACT — carte rose
+       ============================================= */
+    .section-contact {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+    }
+
+    .carte-contact {
+      background-color: var(--rose);
+      border-radius: 20px;
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: stretch; /* les deux colonnes s'étirent sur toute la hauteur */
+      min-height: 280px;
+    }
+
+    /* Colonne gauche : coordonnées poussées en bas */
+    .carte-contact .coordonnees {
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 20px;
+      font-weight: 400; /* regular */
+      line-height: 1.7;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    /* Colonne droite : message en haut, liens en bas */
+    .carte-contact .message {
+      text-align: right;
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 400; /* regular */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .carte-contact .message p {
+      font-size: 20px;
+      line-height: 1.4;
+    }
+
+    .carte-contact .liens-contact {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .carte-contact .liens-contact a {
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 20px;
+      text-decoration: underline;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* =============================================
+       ANIMATIONS AU SCROLL
+       ============================================= */
+
+    /* État initial : invisible et décalé vers le bas */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    /* État final : visible et à sa position normale */
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Délais pour que les éléments côte à côte apparaissent l'un après l'autre */
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.25s; }
+    .reveal-delay-3 { transition-delay: 0.4s; }
+
+    /* =============================================
+       BOUTON RETOUR EN HAUT
+       ============================================= */
+    #btn-haut {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--blanc);
+      color: var(--noir);
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+
+    #btn-haut:hover {
+      transform: translateY(-3px);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================
+       NAVIGATION
+       ========================================== -->
+  <nav>
+    <a href="index.html" class="nom">Sandrine Babineau</a>
+    <div class="liens">
+      <a href="apropos.html">À propos</a>
+      <a href="#projets">Projets</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       HERO — grand titre
+       ========================================== -->
+  <section class="hero">
+    <h1>Sandrine Babineau</h1>
+    <p class="sous-titre">Façonner <span>l'expérience</span></p>
+  </section>
+
+  <!-- ==========================================
+       SECTION PRINCIPALE — bio + grille projets
+       ========================================== -->
+  <section id="projets" class="section-principale">
+
+    <!-- Texte de présentation -->
+    <div class="bio reveal reveal-delay-1">
+      <p class="accroche">
+        <strong>Designer UX/UI</strong> avec la passion et la mission
+        de créer des produits numériques qui savent simplifier la vie
+        de tous,<br><br>
+        sans jamais perdre de vue l'humain.
+      </p>
+    </div>
+
+    <!-- Projet 1 : Desjardins -->
+    <div class="carte-projet projet-1 reveal reveal-delay-2">
+      <img src="images/projet1.png" alt="Desjardins" class="image-fond">
+      <div class="etiquette">
+        <span>Projet 1</span>
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 22H37M27 11L37 22L27 33" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="overlay">
+        <p class="projet-titre">Desjardins</p>
+        <p class="projet-desc">
+          Améliorer l'intégration et la visibilité de l'offre immobilière
+          de Desjardins au sein de son écosystème financier numérique.
+        </p>
+        <div class="tags">
+          <span class="tag rose">Design UX</span>
+          <span class="tag bleu">Design UI</span>
+          <span class="tag orange">Recherche UX</span>
+          <span class="tag vert">Architecture d'information</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projet 2 : Naître et grandir -->
+    <div class="carte-projet projet-2 reveal reveal-delay-1">
+      <img src="images/projet2.png" alt="Naître et grandir" class="image-fond">
+      <div class="etiquette">
+        <span>Projet 2</span>
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 22H37M27 11L37 22L27 33" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="overlay">
+        <p class="projet-titre">Naître et grandir +</p>
+        <p class="projet-desc">
+          Assistant intelligent de Naître et Grandir visant à centraliser
+          l'information périnatale et à accompagner les parents à chaque
+          étape de la parentalité.
+        </p>
+        <div class="tags">
+          <span class="tag rose">Design UX</span>
+          <span class="tag violet">Design de service</span>
+          <span class="tag orange">Recherche UX</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projet 3 : BODI -->
+    <div class="carte-projet projet-3 reveal reveal-delay-2">
+      <img src="images/projet3.png" alt="BODI" class="image-fond">
+      <div class="etiquette">
+        <span>Projet 3</span>
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 22H37M27 11L37 22L27 33" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="overlay">
+        <p class="projet-titre">BODI</p>
+        <p class="projet-desc">
+          Écosystème de trois dispositifs connectés visant à accompagner
+          les aînés et leurs proches aidants dans le maintien à domicile.
+        </p>
+        <div class="tags">
+          <span class="tag rose">Design UX</span>
+          <span class="tag bleu">Design UI</span>
+          <span class="tag orange">Recherche UX</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==========================================
+       SECTION À PROPOS
+       ========================================== -->
+  <section id="apropos" class="section-apropos">
+    <div class="carte-apropos reveal">
+      <div class="texte-bio">
+        <p>
+          Diplômée à la maîtrise en design d'interaction (UX) et bachelière
+          en administration des affaires, je conçois des solutions qui
+          concilient les besoins réels des gens avec les objectifs d'affaires.
+        </p>
+        <p>
+          Je me spécialise en recherche, conception et résolution de problèmes,
+          tout en restant curieuse des autres disciplines du design. Cette
+          polyvalence me permet de comprendre un projet dans son ensemble
+          et de créer des expériences cohérentes.
+        </p>
+      </div>
+      <div class="services">
+        <h3>Services</h3>
+        <ul>
+          <li>UX/UI</li>
+          <li>Recherche utilisateur</li>
+          <li>Conception &amp; idéation</li>
+          <li>Architecture d'information</li>
+          <li>Marketing</li>
+          <li>RH</li>
+          <li>Administration</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION CONTACT
+       ========================================== -->
+  <section id="contact" class="section-contact">
+    <div class="carte-contact reveal">
+      <div class="coordonnees">
+        <p>sandrine.babineau@videotron.ca</p>
+        <p>(418) 956-3771</p>
+      </div>
+      <div class="message">
+        <p>
+          Je suis présentement ouverte à de nouvelles opportunités.<br>
+          N'hésitez pas à me contacter !
+        </p>
+        <div class="liens-contact">
+          <a href="https://www.linkedin.com" target="_blank">LinkedIn ↗</a>
+          <a href="#" target="_blank">Curriculum Vitae ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       BOUTON RETOUR EN HAUT
+       ========================================== -->
+  <button id="btn-haut" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" title="Retour en haut">
+    ↑
+  </button>
+
+  <!-- ==========================================
+       ANIMATION AU SCROLL (apparition des blocs)
+       ========================================== -->
+  <script>
+    // IntersectionObserver : observe chaque élément .reveal
+    // et ajoute la classe .visible quand il entre dans l'écran
+    const observateur = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            // On arrête d'observer une fois que l'animation est jouée
+            observateur.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.15, // déclenche quand 15% de l'élément est visible
+      }
+    );
+
+    // On cible tous les éléments avec la classe .reveal
+    document.querySelectorAll('.reveal').forEach((el) => {
+      observateur.observe(el);
+    });
+  </script>
+
+  <!-- ==========================================
+       ANIMATION DU SOUS-TITRE
+       ========================================== -->
+  <script>
+    // Liste des mots et leurs couleurs
+    const mots = [
+      { texte: "l'expérience",    couleur: "#EDFB86" },
+      { texte: "les interactions", couleur: "#E92B61" },
+      { texte: "les idées",        couleur: "#EF891C" },
+      { texte: "les solutions",    couleur: "#7C93C0" },
+      { texte: "demain",           couleur: "#C0A77C" },
+    ];
+
+    const span = document.querySelector(".hero .sous-titre span");
+    let index = 0;
+
+    function changerMot() {
+      // Applique le mot et la couleur correspondants
+      span.textContent = mots[index].texte;
+      span.style.color  = mots[index].couleur;
+
+      if (index === mots.length - 1) {
+        // "demain" : on attend 5 secondes avant de recommencer
+        index = 0;
+        setTimeout(changerMot, 5000);
+      } else {
+        // Tous les autres mots : on change toutes les 500ms
+        index++;
+        setTimeout(changerMot, 400);
+      }
+    }
+
+    // Démarrage de l'animation
+    changerMot();
+  </script>
+
+</body>
+</html>
