@@ -449,6 +449,260 @@
 
     #btn-haut:hover { opacity: 0.85; }
 
+    /* =============================================
+       HAMBURGER — caché sur desktop
+       ============================================= */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 300;
+      position: relative;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--blanc);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* =============================================
+       RESPONSIVE — TABLET + MOBILE (≤ 1024px)
+       ============================================= */
+    @media (max-width: 1024px) {
+
+      /* Navigation */
+      nav {
+        padding: 20px 32px;
+        position: relative;
+        z-index: 250;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      nav .liens {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: var(--noir);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 48px;
+        font-size: 28px;
+        z-index: 200;
+      }
+
+      nav .liens.open {
+        display: flex;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 100px 32px 100px;
+      }
+
+      /* Grille projets → colonne unique */
+      .section-principale {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        padding: 0 32px 48px;
+        gap: 32px;
+      }
+
+      .bio {
+        padding-right: 0;
+      }
+
+      .bio .accroche {
+        font-size: 28px;
+        margin-bottom: 0;
+      }
+
+      /* Cartes projets : layout statique empilé (pas de hover sur iPad/mobile) */
+      .projet-1,
+      .projet-2,
+      .projet-3 {
+        grid-column: 1;
+        grid-row: auto;
+        height: auto;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+      }
+
+      a.carte-projet.projet-3 {
+        display: flex !important;
+        flex-direction: column;
+      }
+
+      .carte-projet .image-fond {
+        height: 280px;
+        border-radius: 16px;
+        flex-shrink: 0;
+        width: 100%;
+        object-fit: cover;
+      }
+
+      .carte-projet .etiquette {
+        position: static;
+        padding: 14px 4px 6px;
+        font-size: 24px;
+        justify-content: flex-start;
+        color: var(--blanc);
+      }
+
+      .carte-projet .etiquette svg {
+        display: none;
+      }
+
+      .carte-projet .overlay {
+        position: static;
+        opacity: 1;
+        background: none;
+        border-radius: 0;
+        padding: 0 4px 8px;
+      }
+
+      .overlay .projet-desc {
+        font-size: 18px;
+        margin-bottom: 16px;
+        color: var(--blanc);
+        font-weight: 300;
+      }
+
+      .carte-projet:hover .overlay { opacity: 1; }
+      .carte-projet:hover .image-fond { transform: none; }
+
+      /* Sections */
+      .section-apropos {
+        padding: 0 32px 48px;
+      }
+
+      .carte-apropos {
+        padding: 36px;
+      }
+
+      .section-contact {
+        padding: 0 32px 64px;
+      }
+
+      .carte-contact {
+        padding: 36px;
+      }
+    }
+
+    /* =============================================
+       RESPONSIVE — MOBILE (≤ 768px)
+       ============================================= */
+    @media (max-width: 768px) {
+
+      nav {
+        padding: 16px 24px;
+      }
+
+      nav .liens {
+        font-size: 24px;
+        gap: 40px;
+      }
+
+      .hero {
+        padding: 64px 24px 64px;
+      }
+
+      .hero h1 {
+        white-space: normal;
+        font-size: clamp(28px, 8vw, 48px);
+        letter-spacing: -0.5px;
+      }
+
+      .hero .sous-titre {
+        font-size: clamp(22px, 6vw, 36px);
+      }
+
+      .section-principale {
+        padding: 0 24px 48px;
+        gap: 24px;
+      }
+
+      .bio .accroche {
+        font-size: clamp(16px, 4.5vw, 22px);
+      }
+
+      .carte-projet .image-fond {
+        height: 220px;
+      }
+
+      .carte-projet .etiquette {
+        font-size: 20px;
+      }
+
+      .overlay .projet-desc {
+        font-size: 16px;
+      }
+
+      .overlay .tags .tag {
+        font-size: 13px;
+        padding: 6px 14px;
+      }
+
+      /* À propos — empilé */
+      .section-apropos {
+        padding: 0 24px 48px;
+      }
+
+      .carte-apropos {
+        grid-template-columns: 1fr;
+        padding: 32px;
+        min-height: auto;
+        gap: 32px;
+      }
+
+      .carte-apropos .services {
+        text-align: left;
+        align-self: start;
+      }
+
+      /* Contact — empilé */
+      .section-contact {
+        padding: 0 24px 64px;
+      }
+
+      .carte-contact {
+        grid-template-columns: 1fr;
+        padding: 32px;
+        min-height: auto;
+        gap: 32px;
+      }
+
+      .carte-contact .coordonnees {
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+
+      .carte-contact .message {
+        text-align: left;
+      }
+
+      .carte-contact .liens-contact {
+        align-items: flex-start;
+      }
+    }
+
   </style>
 </head>
 
@@ -459,11 +713,16 @@
        ========================================== -->
   <nav>
     <a href="index.html" class="nom">Sandrine Babineau</a>
-    <div class="liens">
+    <div class="liens" id="nav-liens">
       <a href="apropos.html">À propos</a>
       <a href="#projets">Projets</a>
       <a href="#contact">Contact</a>
     </div>
+    <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
 
   <!-- ==========================================
@@ -648,6 +907,24 @@
     const btnHaut = document.getElementById('btn-haut');
     window.addEventListener('scroll', () => {
       btnHaut.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    // Menu hamburger
+    const hamburger = document.getElementById('hamburger');
+    const navLiens = document.getElementById('nav-liens');
+    hamburger.addEventListener('click', () => {
+      const isOpen = hamburger.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      navLiens.classList.toggle('open');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+    navLiens.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        navLiens.classList.remove('open');
+        document.body.style.overflow = '';
+      });
     });
   </script>
 
