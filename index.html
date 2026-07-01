@@ -300,9 +300,10 @@
       border-radius: 20px;
       padding: 48px;
       display: grid;
-      grid-template-columns: 3fr 2fr; /* fr = unités flexibles qui respectent le padding et le gap */
+      grid-template-columns: 3fr 2fr;
       gap: 48px;
       align-items: start;
+      min-height: 320px;
     }
 
     .carte-apropos .texte-bio {
@@ -324,7 +325,7 @@
 
     .carte-apropos .services h3 {
       font-size: 20px;
-      font-weight: 700;
+      font-weight: 400;
       margin-bottom: 12px;
     }
 
@@ -492,13 +493,12 @@
     <div class="carte-projet projet-1 reveal reveal-delay-2">
       <img src="images/projet1.png" alt="Desjardins" class="image-fond">
       <div class="etiquette">
-        <span>Projet 1</span>
+        <span>Desjardins</span>
         <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7 22H37M27 11L37 22L27 33" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
       <div class="overlay">
-        <p class="projet-titre">Desjardins</p>
         <p class="projet-desc">
           Améliorer l'intégration et la visibilité de l'offre immobilière
           de Desjardins au sein de son écosystème financier numérique.
@@ -516,13 +516,12 @@
     <div class="carte-projet projet-2 reveal reveal-delay-1">
       <img src="images/projet2.png" alt="Naître et grandir" class="image-fond">
       <div class="etiquette">
-        <span>Projet 2</span>
+        <span>Naître et grandir +</span>
         <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7 22H37M27 11L37 22L27 33" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
       <div class="overlay">
-        <p class="projet-titre">Naître et grandir +</p>
         <p class="projet-desc">
           Assistant intelligent de Naître et Grandir visant à centraliser
           l'information périnatale et à accompagner les parents à chaque
@@ -537,16 +536,15 @@
     </div>
 
     <!-- Projet 3 : BODI -->
-    <div class="carte-projet projet-3 reveal reveal-delay-2">
+    <a href="bodi.html" class="carte-projet projet-3 reveal reveal-delay-2" style="display:block; text-decoration:none; color:inherit;">
       <img src="images/projet3.png" alt="BODI" class="image-fond">
       <div class="etiquette">
-        <span>Projet 3</span>
+        <span>BODI</span>
         <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7 22H37M27 11L37 22L27 33" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
       <div class="overlay">
-        <p class="projet-titre">BODI</p>
         <p class="projet-desc">
           Écosystème de trois dispositifs connectés visant à accompagner
           les aînés et leurs proches aidants dans le maintien à domicile.
@@ -557,7 +555,7 @@
           <span class="tag orange">Recherche UX</span>
         </div>
       </div>
-    </div>
+    </a>
 
   </section>
 
@@ -568,11 +566,6 @@
     <div class="carte-apropos reveal">
       <div class="texte-bio">
         <p>
-          Diplômée à la maîtrise en design d'interaction (UX) et bachelière
-          en administration des affaires, je conçois des solutions qui
-          concilient les besoins réels des gens avec les objectifs d'affaires.
-        </p>
-        <p>
           Je me spécialise en recherche, conception et résolution de problèmes,
           tout en restant curieuse des autres disciplines du design. Cette
           polyvalence me permet de comprendre un projet dans son ensemble
@@ -580,15 +573,15 @@
         </p>
       </div>
       <div class="services">
-        <h3>Services</h3>
+        <h3>Forces</h3>
         <ul>
           <li>UX/UI</li>
           <li>Recherche utilisateur</li>
           <li>Conception &amp; idéation</li>
           <li>Architecture d'information</li>
-          <li>Marketing</li>
-          <li>RH</li>
+          <li>Design de service</li>
           <li>Administration</li>
+          <li>Marketing</li>
         </ul>
       </div>
     </div>
@@ -610,7 +603,7 @@
         </p>
         <div class="liens-contact">
           <a href="https://www.linkedin.com" target="_blank">LinkedIn ↗</a>
-          <a href="#" target="_blank">Curriculum Vitae ↗</a>
+          <a href="https://drive.google.com/file/d/1tEvXxRfyh6LgLQYV5p5QzKg4imtat7Ns/view?usp=sharing" target="_blank">Curriculum Vitae ↗</a>
         </div>
       </div>
     </div>

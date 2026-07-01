@@ -64,7 +64,7 @@
     .section-hero {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 48px 48px 80px;
+      padding: 48px 48px 0;
       position: relative;
     }
 
@@ -151,7 +151,7 @@
     .section-galerie {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 153px 48px 80px; /* 37 (haut fleurs) + 67 (hauteur SVG) + 49 (gap titre) */
+      padding: 48px 48px 80px;
       position: relative;
     }
 
@@ -286,6 +286,151 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* =============================================
+       HAMBURGER — caché sur desktop
+       ============================================= */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 300;
+      position: relative;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--blanc);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* =============================================
+       RESPONSIVE — TABLET + MOBILE (≤ 1024px)
+       ============================================= */
+    @media (max-width: 1024px) {
+
+      nav {
+        padding: 20px 32px;
+        position: relative;
+        z-index: 250;
+      }
+
+      .hamburger { display: flex; }
+
+      nav .liens {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: var(--noir);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 48px;
+        font-size: 28px;
+        z-index: 200;
+      }
+
+      nav .liens.open { display: flex; }
+
+      /* Fleur orange trop à droite sur iPad → repositionner */
+      .deco-hero-orange { left: auto; right: 8px; top: 560px; }
+
+      .section-hero { padding: 32px 32px 0; }
+
+      .titre-page {
+        font-size: 48px;
+        margin-bottom: 40px;
+      }
+
+      .section-galerie { padding: 32px 32px 64px; }
+
+      .rangee-photos { gap: 32px; }
+
+      .section-contact { padding: 32px 32px 80px; }
+    }
+
+    /* =============================================
+       RESPONSIVE — MOBILE (≤ 768px)
+       ============================================= */
+    @media (max-width: 768px) {
+
+      nav { padding: 16px 24px; }
+
+      nav .liens {
+        font-size: 24px;
+        gap: 40px;
+      }
+
+      /* Fleurs : repositionnement mobile */
+      .deco-hero-g img { width: 36px; height: auto; }
+      .deco-hero-d { left: auto; right: -4px; top: 20px; }
+      .deco-hero-d img { width: 40px; height: auto; }
+      .deco-hero-orange { display: none; } /* trop complexe à repositionner en mobile */
+      .deco-galerie img { width: 37px; height: auto; }
+      .deco-contact { left: auto; right: -4px; }
+      .deco-contact img { width: 38px; height: auto; }
+
+      .section-hero { padding: 24px 24px 0; }
+
+      .titre-page {
+        font-size: clamp(32px, 9vw, 48px);
+        margin-bottom: 28px;
+      }
+
+      /* Portrait + bio empilés */
+      .hero-contenu {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .portrait-wrapper { max-height: 340px; }
+
+      .bio-texte p { font-size: 17px; }
+
+      .btn-cv { font-size: 17px; }
+
+      /* Galerie — padding-top augmenté pour loger les fleurs dans l'espace noir */
+      .section-galerie { padding: 64px 24px 64px; }
+
+      .section-galerie .titre-section { font-size: 28px; }
+
+      .section-galerie .desc-section {
+        font-size: 17px;
+        margin-bottom: 32px;
+      }
+
+      .rangee-photos {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .grille-photos { gap: 32px; }
+
+      .legende { font-size: 14px; }
+
+      /* Contact */
+      .section-contact { padding: 24px 24px 80px; }
+
+      .titre-contact { font-size: 28px; }
+
+      .coordonnees {
+        font-size: 17px;
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+    }
   </style>
 </head>
 
@@ -295,24 +440,34 @@
   <!-- ============ NAVIGATION ============ -->
   <nav>
     <a href="index.html" class="nom">Sandrine Babineau</a>
-    <div class="liens">
+    <div class="liens" id="nav-liens">
       <a href="apropos.html">À propos</a>
       <a href="index.html#projets">Projets</a>
       <a href="index.html#contact">Contact</a>
     </div>
+    <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
 
   <!-- ============ HERO ============ -->
   <section class="section-hero">
 
     <!-- Fleurs gauche : bord droit à 6.23px du "À", haut à 26.5px du haut du titre -->
-    <span class="deco" style="top: 69px; left: -10px;">
+    <span class="deco deco-hero-g" style="top: 69px; left: -10px;">
       <img src="images/fleurs/apropos-1.svg" width="52" height="91" alt="" />
     </span>
 
     <!-- Fleurs droite : 469.58px du bord gauche du titre, hauteur 58.5px -->
-    <span class="deco" style="top: 24px; left: 494px;">
+    <span class="deco deco-hero-d" style="top: 24px; left: 494px;">
       <img src="images/fleurs/apropos-2.svg" width="59" height="58" alt="" />
+    </span>
+
+    <!-- Fleur orange : bas droite, alignée avec portrait -->
+    <span class="deco deco-hero-orange" style="top: 700px; left: 975px;">
+      <img src="images/fleurs/fleur-orange.svg" width="74" height="68" alt="" />
     </span>
 
     <h1 class="titre-page reveal">À propos de moi</h1>
@@ -326,7 +481,7 @@
         <p>Si je suis nouvellement diplômée en design d'interaction, mon intérêt pour le design, lui, remonte à toujours.</p>
         <p>Avec un parcours en administration des affaires, en marketing et en ressources humaines, mon cheminement est plus atypique, mais surtout complémentaire. Il m'a permis de découvrir le monde des affaires et, surtout, de réaliser l'importance de mettre ma créativité de l'avant dans différents projets.</p>
         <p>Aujourd'hui, je souhaite concevoir des expériences qui font du sens, autant pour les utilisateurs que pour les organisations, là où je peux combiner ma capacité à créer, à résoudre des problèmes et à me mettre à la place des autres.</p>
-        <a href="#" class="btn-cv">Mon Curriculum Vitae ↗</a>
+        <a href="https://drive.google.com/file/d/1tEvXxRfyh6LgLQYV5p5QzKg4imtat7Ns/view?usp=sharing" target="_blank" class="btn-cv">Mon Curriculum Vitae ↗</a>
       </div>
     </div>
   </section>
@@ -335,7 +490,7 @@
   <section class="section-galerie">
 
     <!-- Fleurs Au-delà : top 37px depuis le haut de la section, left aligné au contenu -->
-    <span class="deco" style="top: 107px; left: 18px;">
+    <span class="deco deco-galerie" style="top: 0px; left: 18px;">
       <img src="images/fleurs/audelà.svg" width="53" height="67" alt="" />
     </span>
 
@@ -391,6 +546,11 @@
   <!-- ============ CONTACT ============ -->
   <section class="section-contact">
 
+    <!-- Fleur contact : 550.89px depuis bord gauche canvas (120px padding) → left ~361px, au-dessus du titre -->
+    <span class="deco deco-contact" style="top: 10px; left: 451px;">
+      <img src="images/fleurs/contact.svg" width="55" height="50" alt="" />
+    </span>
+
     <h2 class="titre-contact reveal">Curieux d'en savoir plus ?</h2>
     <div class="ligne-separatrice"></div>
     <p class="coordonnees reveal">
@@ -424,6 +584,24 @@
     const btnTop = document.getElementById('btnTop');
     window.addEventListener('scroll', () => {
       btnTop.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    // Menu hamburger
+    const hamburger = document.getElementById('hamburger');
+    const navLiens = document.getElementById('nav-liens');
+    hamburger.addEventListener('click', () => {
+      const isOpen = hamburger.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      navLiens.classList.toggle('open');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+    navLiens.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        navLiens.classList.remove('open');
+        document.body.style.overflow = '';
+      });
     });
   </script>
 

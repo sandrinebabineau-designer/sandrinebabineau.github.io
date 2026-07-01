@@ -1,0 +1,2513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BODI — Sandrine Babineau</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,900;1,600&family=La+Belle+Aurore&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       DESIGN TOKENS
+       ============================================= */
+    :root {
+      /* Colors */
+      --color-bodi-blue:     #181176;
+      --color-bodi-navy:     #181176;
+      --color-bodi-bg:       #f4f8ff;
+      --color-white:         #ffffff;
+      --color-black:         #000000;
+      --color-nav-bg:        #ffffff;
+      --color-nav-text:      #000000;
+      --color-nav-border:    rgba(0,0,0,0.10);
+      --color-chip-purple:   #e5e5f6;
+      --color-chip-yellow:   #fff8de;
+      --color-chip-blue:     #dbebff;
+      --color-chip-green:    #eaf6d8;
+      --color-dot-green:     #22c55e;
+      --color-dot-yellow:    #FFD311;
+      --color-dot-red:       #ef4444;
+      --color-tag-rose:      #e92b61;
+      --color-tag-bleu:      #8cb3f1;
+      --color-tag-orange:    #ef891c;
+      --color-tag-vert:      #03b211;
+      --color-tag-violet:    #bf0bd7;
+      --color-back-top:      #C0A77C;
+      --color-border:        rgba(0,0,0,0.12);
+      --color-shadow:        rgba(0,0,0,0.10);
+
+      /* Font sizes */
+      --fs-h1:       64px;
+      --fs-h2:       36px;
+      --fs-h3:       32px;
+      --fs-body-lg:  20px;
+      --fs-body:     18px;
+      --fs-nav:      16px;
+      --fs-caption:  14px;
+
+      /* Font weights */
+      --fw-regular:   400;
+      --fw-medium:    500;
+      --fw-semibold:  600;
+      --fw-bold:      700;
+
+      /* Spacing */
+      --space-section-x:  48px;
+      --space-section-y:  48px;
+      --space-gap-lg:     56px;
+      --space-gap-md:     36px;
+      --space-gap-sm:     24px;
+      --space-gap-card:   33px;
+
+      /* Border radius */
+      --radius-card:   15px;
+      --radius-chip:   15px;
+      --radius-tag:    20px;
+      --radius-circle: 50%;
+
+      /* Shadows */
+      --shadow-card:  0 4px 2px rgba(0,0,0,0.10);
+      --shadow-screen: 0 4px 4px rgba(0,0,0,0.25);
+    }
+
+    /* =============================================
+       RESET
+       ============================================= */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--color-white);
+      color: var(--color-black);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif;
+      font-size: var(--fs-body);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    ul, ol { list-style: none; }
+    button { cursor: pointer; border: none; background: none; font: inherit; }
+
+    /* =============================================
+       NAVIGATION
+       ============================================= */
+    .nav {
+      background: var(--color-white);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+
+    .nav__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav__logo {
+      color: var(--color-black);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .nav__links a {
+      color: var(--color-black);
+      font-size: 14px;
+      font-weight: 400;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav__links a:hover { text-decoration: underline; }
+
+    /* Hamburger button — hidden on desktop */
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 17px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .nav__hamburger-line {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--color-nav-text);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: center;
+    }
+
+    /* Hamburger → X animation */
+    .nav__hamburger[aria-expanded="true"] .nav__hamburger-line:nth-child(1) {
+      transform: translateY(7.5px) rotate(45deg);
+    }
+    .nav__hamburger[aria-expanded="true"] .nav__hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .nav__hamburger[aria-expanded="true"] .nav__hamburger-line:nth-child(3) {
+      transform: translateY(-7.5px) rotate(-45deg);
+    }
+
+    /* Mobile nav menu */
+    .nav__mobile-menu {
+      display: none;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease;
+      background: var(--color-white);
+      border-top: 1px solid var(--color-nav-border);
+    }
+
+    .nav__mobile-menu.is-open {
+      max-height: 300px;
+    }
+
+    .nav__mobile-links {
+      display: flex;
+      flex-direction: column;
+      padding: 16px var(--space-section-x) 24px;
+      gap: 20px;
+    }
+
+    .nav__mobile-links a {
+      color: var(--color-black);
+      font-size: 14px;
+      font-weight: 400;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    /* =============================================
+       HERO
+       ============================================= */
+    .hero {
+      background: linear-gradient(to bottom, #ffffff 0%, var(--color-bodi-bg) 100%);
+    }
+
+    .hero__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px var(--space-section-x) 24px;
+      display: flex;
+      align-items: center;
+      gap: 72px;
+    }
+
+    .hero__content {
+      flex: 0 0 460px;
+      min-width: 0;
+    }
+
+    .hero__title {
+      font-size: var(--fs-h1);
+      font-weight: var(--fw-medium);
+      color: var(--color-bodi-blue);
+      line-height: 1.2;
+      margin-bottom: var(--space-gap-md);
+    }
+
+    .hero__description {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+      max-width: 687px;
+      margin-bottom: var(--space-gap-lg);
+    }
+
+    .hero__meta {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .hero__meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .hero__meta-item--chronologie { width: 151px; }
+    .hero__meta-item--disciplines { width: 201px; }
+    .hero__meta-item--equipe      { width: 201px; }
+
+    .hero__meta-label {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-bodi-blue);
+      line-height: 1;
+    }
+
+    .hero__meta-value {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.8;
+    }
+
+    .hero__meta-sep {
+      width: 1px;
+      height: 103px;
+      background: rgba(0,0,0,0.2);
+      flex-shrink: 0;
+      align-self: center;
+    }
+
+    .hero__image {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .hero__image img {
+      width: 100%;
+      max-width: 440px;
+      height: auto;
+      transform: translateX(72px) rotate(-5deg);
+      transform-origin: center right;
+    }
+
+    /* =============================================
+       SHARED SECTION WRAPPER
+       ============================================= */
+    .section { width: 100%; }
+    .section--white { background: var(--color-white); }
+    .section--light { background: var(--color-bodi-bg); }
+    .section--gradient { background: linear-gradient(to bottom, var(--color-white) 0%, var(--color-bodi-bg) 100%); }
+
+    .section__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: var(--space-section-y) var(--space-section-x);
+    }
+
+    .section__title {
+      font-size: var(--fs-h2);
+      font-weight: var(--fw-semibold);
+      color: var(--color-bodi-blue);
+      line-height: 1;
+      margin-bottom: var(--space-gap-md);
+    }
+
+    .section__title--black { color: var(--color-black); }
+
+    .section__intro {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+      margin-bottom: var(--space-gap-lg);
+    }
+
+    /* =============================================
+       MISE EN CONTEXTE
+       ============================================= */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-gap-card);
+      margin-bottom: var(--space-gap-lg);
+    }
+
+    .stats__card {
+      background: var(--color-white);
+      border-radius: var(--radius-card);
+      padding: 20px;
+      min-height: 198px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      text-align: center;
+    }
+
+    .stats__number {
+      font-size: var(--fs-h2);
+      font-weight: var(--fw-semibold);
+      color: var(--color-bodi-blue);
+      line-height: 1;
+    }
+
+    .stats__icon {
+      font-size: 36px;
+      color: var(--color-bodi-blue);
+      line-height: 1;
+      font-style: normal;
+    }
+
+    .stats__text {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.4;
+    }
+
+    .stats__source {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--fs-caption);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+    }
+
+    /* Problem / Response blocks */
+    .context-block { margin-bottom: var(--space-gap-lg); }
+    .context-block:last-child { margin-bottom: 0; }
+
+    .context-block__label {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 0;
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-black);
+      margin-bottom: 18px;
+    }
+
+    .context-block__items {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .context-block__item {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .context-block__bar {
+      width: 7px;
+      background: var(--color-bodi-navy);
+      flex-shrink: 0;
+    }
+
+    .context-block__text {
+      background: var(--color-white);
+      flex: 1;
+      padding: 20px 16px;
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+    }
+
+    .context-block__response {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+    }
+
+    /* =============================================
+       DÉMARCHE DE RECHERCHE
+       ============================================= */
+    .methods {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-gap-card);
+    }
+
+    .methods__card {
+      background: var(--color-white);
+      border-radius: var(--radius-card);
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 280px;
+    }
+
+    .methods__card-title {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-black);
+      line-height: 1.3;
+    }
+
+    .methods__card-desc {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .methods__card-icon {
+      align-self: flex-end;
+      width: 72px;
+      height: auto;
+      display: block;
+    }
+
+    /* =============================================
+       DÉMARCHE DE RECHERCHE — grille Figma
+       ============================================= */
+    .methods-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 33px 33px;
+      width: 100%;
+    }
+
+    .method-card {
+      background: var(--color-white);
+      border-radius: 15px;
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 290px;
+    }
+
+    .method-card__text {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .method-card__title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--color-black);
+      line-height: normal;
+    }
+
+    .method-card__desc {
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--color-black);
+      line-height: normal;
+    }
+
+    .method-card__icon {
+      align-self: flex-end;
+      margin-top: 24px;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 1024px) {
+      .methods-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .methods-grid { grid-template-columns: 1fr; }
+      .method-card { min-height: auto; }
+    }
+
+    /* =============================================
+       MÉTHODES D'ANALYSE
+       ============================================= */
+    .analysis-photos {
+      display: flex;
+      gap: var(--space-gap-card);
+      align-items: flex-end;
+      margin-bottom: var(--space-gap-lg);
+    }
+
+    /* Wrapper around left photo for "C'est moi!" annotation */
+    .analysis-photos__left {
+      position: relative;
+      flex-shrink: 0;
+      width: 360px;
+    }
+
+    .analysis-photos__img {
+      border-radius: 12px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .analysis-photos__img--small {
+      width: 100%;
+      height: 363px;
+    }
+
+    .analysis-photos__img--large {
+      flex: 1;
+      height: 363px;
+      width: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* "C'est moi !" annotation — SVG overlay to the left of the photo */
+    .cest-moi {
+      position: absolute;
+      left: -133px;
+      top: 130px;
+      width: 218px;
+      height: 165px;
+      pointer-events: none;
+    }
+
+    .analysis-columns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .analysis-columns > div {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .analysis-col__header {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-black);
+      padding-top: 8px;
+    }
+
+    .analysis-col__cards {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      background: var(--color-white);
+      border-radius: 15px;
+      padding: 24px;
+      width: 100%;
+    }
+
+    .chip {
+      border-radius: var(--radius-chip);
+      padding: 16px;
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.4;
+    }
+
+    .chip--purple { background: var(--color-chip-purple); }
+    .chip--yellow { background: var(--color-chip-yellow); }
+    .chip--blue   { background: var(--color-chip-blue); }
+    .chip--green  { background: var(--color-chip-green); }
+
+    .chip strong {
+      font-weight: var(--fw-semibold);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .chip ul { padding-left: 16px; list-style: disc; }
+    .chip ul li { margin-bottom: 4px; }
+
+    /* =============================================
+       ÉCOSYSTÈME
+       ============================================= */
+    .ecosystem {
+      display: flex;
+      gap: 48px;
+      align-items: flex-start;
+    }
+
+    .ecosystem__left {
+      width: 320px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .ecosystem__left-header {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .ecosystem__left-subtitle {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-bodi-blue);
+      padding: 8px 0;
+    }
+
+    .ecosystem__left-desc {
+      font-size: var(--fs-body-lg);
+      color: var(--color-black);
+      line-height: 1.5;
+    }
+
+    .ecosystem__synthese {
+      width: 100%;
+      display: block;
+    }
+
+    .ecosystem__right {
+      flex: 1;
+      min-width: 0;
+      margin-right: calc(-1 * var(--space-section-x));
+    }
+
+    .ecosystem__bodi {
+      width: 100%;
+      display: block;
+    }
+
+    /* =============================================
+       INSIGHTS PRINCIPAUX
+       ============================================= */
+    .insights__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .insight {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .insight__num {
+      font-family: 'Inter', sans-serif;
+      font-size: 32px;
+      font-weight: var(--fw-semibold);
+      color: var(--color-bodi-blue);
+      flex-shrink: 0;
+      width: 44px;
+      line-height: 1;
+    }
+
+    .insight__text {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    /* =============================================
+       OBJECTIFS
+       ============================================= */
+    .objectives {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-gap-card);
+    }
+
+    .objective {
+      background: var(--color-white);
+      border-radius: var(--radius-card);
+      padding: 32px 20px 20px;
+      min-height: 202px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 14px;
+      text-align: center;
+    }
+
+    .objective__number {
+      width: 49px;
+      height: 49px;
+      background: var(--color-bodi-navy);
+      border-radius: var(--radius-circle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .objective__number span {
+      font-family: 'Inter', sans-serif;
+      font-size: 28px;
+      font-weight: var(--fw-bold);
+      color: var(--color-white);
+      line-height: 1;
+      letter-spacing: -0.57px;
+    }
+
+    .objective__text {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+    }
+
+    /* =============================================
+       PRINCIPES DE CONCEPTION
+       ============================================= */
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-gap-card);
+    }
+
+    .principle {
+      border-radius: var(--radius-card);
+      padding: 20px;
+      min-height: 242px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+    }
+
+    /* =============================================
+       SOLUTIONS DISCARTÉES
+       ============================================= */
+    .solutions-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 32px;
+    }
+
+    .solutions-table th,
+    .solutions-table td {
+      border: 1.5px solid #e0e0e0;
+      padding: 16px;
+      vertical-align: middle;
+    }
+
+    .solutions-table__empty-th {
+      background: var(--color-white);
+      border: none !important;
+      width: 32%;
+    }
+
+    .solutions-table__col-th {
+      text-align: center;
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      padding: 20px 12px;
+      line-height: 1.4;
+    }
+
+    .solutions-table__col-th--yellow { background: var(--color-chip-yellow); }
+    .solutions-table__col-th--purple { background: var(--color-chip-purple); }
+    .solutions-table__col-th--green  { background: var(--color-chip-green); }
+    .solutions-table__col-th--blue   { background: var(--color-chip-blue); }
+
+    .solution-row__cell {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .solution-row__icon {
+      width: 88px;
+      height: 88px;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    .solution-row__info {}
+
+    .solution-row__title {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-black);
+      margin-bottom: 6px;
+    }
+
+    .solution-row__desc {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.4;
+    }
+
+    .dot-cell { text-align: center; }
+
+    .dot {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: var(--radius-circle);
+    }
+
+    .dot--green  { background: var(--color-dot-green); }
+    .dot--yellow { background: var(--color-dot-yellow); }
+    .dot--red    { background: var(--color-dot-red); }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .legend__title {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-black);
+    }
+
+    .legend__item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+    }
+
+    /* =============================================
+       SOLUTION BODI
+       ============================================= */
+    .solution-bodi__layout {
+      display: flex;
+      gap: 60px;
+      align-items: stretch;
+      margin-top: 36px;
+    }
+
+    .solution-bodi__visuals {
+      flex-shrink: 0;
+      width: 420px;
+    }
+
+    .solution-bodi__wall-img {
+      width: 100%;
+      display: block;
+      border-radius: 20px;
+    }
+
+    .solution-bodi__features {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+
+    .solution-bodi__feature-content {
+      position: relative;
+      border-left: 3px solid var(--color-black);
+      padding-left: 20px;
+      max-width: 500px;
+    }
+
+    .solution-bodi__feature-content::before {
+      content: '';
+      position: absolute;
+      left: -3px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 3px;
+      background: var(--color-black);
+    }
+
+    .solution-bodi__feature-title {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-bodi-blue);
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+
+    .solution-bodi__feature-desc {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+    }
+
+    .solution-bodi__footer {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .solution-bodi__aine {
+      width: 120px;
+      height: auto;
+    }
+
+    .solution-bodi__divider {
+      height: 4px;
+      border: none;
+      background-image: repeating-linear-gradient(
+        to right,
+        var(--color-bodi-blue) 0,
+        var(--color-bodi-blue) 15px,
+        transparent 15px,
+        transparent 30px
+      );
+      margin-top: 48px;
+    }
+
+    /* =============================================
+       BÉNÉFICES
+       ============================================= */
+    .benefits {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      margin-bottom: 36px;
+    }
+
+    .benefit-card {
+      background: var(--color-white);
+      border-radius: 12px;
+      padding: 36px;
+      min-height: 495px;
+    }
+
+    .benefit-card__header {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+
+    .benefit-card__arrow {
+      color: var(--color-bodi-blue);
+      font-size: 28px;
+      font-style: normal;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .benefit-card__header-title {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-bold);
+      color: var(--color-black);
+    }
+
+    .benefit-item { margin-bottom: var(--space-gap-sm); }
+    .benefit-item:last-child { margin-bottom: 0; }
+
+    .benefit-item__title {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-black);
+      margin-bottom: 4px;
+    }
+
+    .benefit-item__desc {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+    }
+
+    .benefits-principles {
+      background: var(--color-white);
+      border-radius: var(--radius-card);
+      padding: var(--space-gap-sm);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .benefits-principles__item {
+      border-radius: var(--radius-chip);
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: var(--fs-body-lg);
+      color: var(--color-black);
+      position: relative;
+      line-height: 1.4;
+    }
+
+    .benefits-principles__check {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--color-dot-green);
+      color: var(--color-white);
+      border-radius: var(--radius-circle);
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: var(--fw-bold);
+    }
+
+    /* =============================================
+       BODI APP
+       ============================================= */
+    .app__persona {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .app__persona-img {
+      width: 120px;
+      height: auto;
+    }
+
+    .app__section-label {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-bodi-blue);
+      margin-bottom: var(--space-gap-sm);
+    }
+
+    .app-screens {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      margin-bottom: 36px;
+    }
+
+    .app-screen img { width: 100%; display: block; }
+
+    .app__divider {
+      height: 1.5px;
+      background: #e0e0e0;
+      margin-bottom: var(--space-gap-md);
+    }
+
+    .app-features {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 60px;
+      margin-bottom: 72px;
+    }
+
+    .app-feature__title {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    .app-feature__desc {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+    }
+
+    /* Scenarios */
+    .scenario__title {
+      font-size: var(--fs-h2);
+      font-weight: var(--fw-semibold);
+      color: var(--color-bodi-blue);
+      margin-bottom: 40px;
+    }
+
+    .scenarios {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 32px;
+    }
+
+    .scenario:nth-child(-n+3) {
+      grid-column: span 2;
+    }
+
+    .scenario:nth-child(4) {
+      grid-column: 2 / 4;
+    }
+
+    .scenario:nth-child(5) {
+      grid-column: 4 / 6;
+    }
+
+    .scenario {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .scenario__img-wrapper {
+      width: 100%;
+      height: 225px;
+      background: var(--color-white);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .scenario__img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .scenario__text {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    .scenario__text strong { font-weight: var(--fw-semibold); }
+
+    /* =============================================
+       UTILISATION DE L'IA
+       ============================================= */
+    .ia-list {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      max-width: 1013px;
+    }
+
+    .ia-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .ia-item__num {
+      font-size: var(--fs-h2);
+      font-weight: var(--fw-semibold);
+      color: var(--color-bodi-blue);
+      line-height: 1;
+      width: 50px;
+      flex-shrink: 0;
+    }
+
+    .ia-item__content {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .ia-item__title {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-semibold);
+      color: var(--color-black);
+    }
+
+    .ia-item__desc {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+    }
+
+    /* =============================================
+       AUTRES PROJETS
+       ============================================= */
+    .other-projects {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .project-card {
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+    }
+
+    .project-card__img-wrapper {
+      width: 100%;
+      aspect-ratio: 580 / 300;
+      overflow: hidden;
+    }
+
+    .project-card__img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .project-card__body {
+      background: var(--color-white);
+      padding: 16px 16px 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .project-card__title {
+      font-size: 32px;
+      font-weight: var(--fw-medium);
+      color: var(--color-black);
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+
+    .project-card__desc {
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+      line-height: 1.5;
+      padding: 0 8px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 0 8px;
+      margin-top: auto;
+      padding-top: 24px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-radius: var(--radius-tag);
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-white);
+      line-height: 1;
+    }
+
+    .tag--rose   { background: var(--color-tag-rose); }
+    .tag--bleu   { background: var(--color-tag-bleu); }
+    .tag--orange { background: var(--color-tag-orange); }
+    .tag--vert   { background: var(--color-tag-vert); }
+    .tag--violet { background: var(--color-tag-violet); }
+
+    /* =============================================
+       CONTACT
+       ============================================= */
+    .contact__border {
+      padding-top: 0;
+      position: relative;
+    }
+
+    .contact__title {
+      font-size: var(--fs-h2);
+      font-weight: var(--fw-medium);
+      color: var(--color-black);
+      margin-bottom: 12px;
+    }
+
+    .contact__line {
+      height: 1.5px;
+      background: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    .contact__coords {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--fs-body-lg);
+      font-weight: var(--fw-regular);
+      color: var(--color-black);
+    }
+
+    /* =============================================
+       BACK TO TOP
+       ============================================= */
+    #btn-haut {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-circle);
+      background: var(--color-bodi-blue);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.2s ease;
+      z-index: 100;
+    }
+
+    #btn-haut.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #btn-haut:hover { transform: translateY(-2px); }
+
+    /* =============================================
+       UTILITIES
+       ============================================= */
+    .mt-0 { margin-top: 0 !important; }
+
+    /* Italic for Insights title */
+    .title--italic em { font-style: italic; font-family: 'Inter', sans-serif; font-weight: 600; }
+
+    /* =============================================
+       RESPONSIVE — TABLET (≤ 1024px)
+       ============================================= */
+    @media (max-width: 1024px) {
+      :root {
+        --space-section-x: 48px;
+        --fs-h1: 48px;
+      }
+
+      /* Nav */
+      .nav__inner { padding: 20px var(--space-section-x); }
+      .nav__links { display: none; }
+      .nav__hamburger { display: flex; }
+      .nav__mobile-menu { display: block; }
+      .nav__mobile-links { padding-left: var(--space-section-x); padding-right: var(--space-section-x); }
+
+      /* Hero */
+      .hero { padding: 60px var(--space-section-x); }
+      .hero__image { width: 280px; }
+      .hero__image img { width: 240px; }
+
+      /* Stats */
+      .stats { grid-template-columns: repeat(2, 1fr); }
+
+      /* Methods */
+      .methods { grid-template-columns: repeat(2, 1fr); }
+
+      /* Analysis */
+      .analysis-photos { flex-direction: column; align-items: stretch; }
+      .analysis-photos__left { width: 100%; }
+      .analysis-photos__img--small { width: 100%; height: 260px; }
+      .analysis-photos__img--large { height: 260px; width: 100%; flex: none; }
+      .cest-moi { left: -24px; top: 100px; width: 160px; height: 120px; }
+      .analysis-columns { grid-template-columns: repeat(2, 1fr); }
+
+      /* Ecosystem */
+      .ecosystem { flex-direction: column; gap: 40px; }
+      .ecosystem__left { width: 100%; }
+      .ecosystem__right { grid-template-columns: 1fr 1fr; }
+
+      /* Insights */
+      /* insights: already 1 col */
+
+      /* Principles */
+      .principles { grid-template-columns: repeat(2, 1fr); }
+
+      /* Benefits */
+      .benefits-principles { grid-template-columns: repeat(2, 1fr); }
+
+      /* App screens */
+      .app-screens { grid-template-columns: repeat(2, 1fr); }
+      .app-features { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+
+      /* Scenario */
+      .scenarios { grid-template-columns: repeat(2, 1fr); }
+      .scenario:nth-child(-n+3) { grid-column: span 1; }
+      .scenario:nth-child(4) { grid-column: auto; }
+      .scenario:nth-child(5) { grid-column: auto; }
+    }
+
+    /* =============================================
+       RESPONSIVE — MOBILE (≤ 768px)
+       ============================================= */
+    @media (max-width: 768px) {
+      :root {
+        --space-section-x: 24px;
+        --space-section-y: 32px;
+        --fs-h1: 36px;
+        --fs-h2: 26px;
+        --fs-body-lg: 17px;
+      }
+
+      /* Nav */
+      .nav__inner { padding: 16px var(--space-section-x); }
+      .nav__mobile-links { padding: 12px var(--space-section-x) 20px; gap: 16px; }
+
+      /* Hero */
+      .hero { padding: 40px var(--space-section-x); }
+      .hero__inner { flex-direction: column; gap: 32px; }
+      .hero__image { display: none; }
+      .hero__meta { flex-direction: column; gap: 20px; }
+      .hero__meta-sep { display: none; }
+      .hero__description { margin-bottom: 32px; }
+
+      /* Stats */
+      .stats { grid-template-columns: 1fr; }
+
+      /* Methods */
+      .methods { grid-template-columns: 1fr; }
+
+      /* Analysis */
+      .analysis-photos__img--small,
+      .analysis-photos__img--large { height: 200px; }
+      .cest-moi { width: 140px; height: 105px; }
+      .analysis-columns { grid-template-columns: 1fr; }
+
+      /* Ecosystem — already stacked on tablet, nothing extra needed */
+
+      /* Solution BODI */
+      .solution-bodi__layout { flex-direction: column; gap: 32px; }
+      .solution-bodi__visuals { width: 100%; }
+      .solution-bodi__wall-img { width: 100%; }
+      .solution-bodi__features { min-height: auto; padding-top: 0; gap: 32px; justify-content: flex-start; }
+      .solution-bodi__feature-content { max-width: 100%; }
+
+      /* Insights */
+      .insights__grid { gap: 8px; }
+
+      /* Objectives */
+      .objectives { grid-template-columns: 1fr; }
+
+      /* Solutions table */
+      .solutions-table { font-size: 14px; overflow-x: auto; display: block; }
+      .solutions-table th, .solutions-table td { padding: 10px 8px; }
+
+      /* Benefits */
+      .benefits { grid-template-columns: 1fr; }
+      .benefits-principles { grid-template-columns: repeat(2, 1fr); }
+
+      /* App */
+      .app-screens { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .app-features { grid-template-columns: 1fr; gap: 24px; }
+      .app-logo { height: 80px; }
+
+      /* Scenarios */
+      .scenarios { grid-template-columns: 1fr; }
+      .scenario:nth-child(-n+3) { grid-column: span 1; }
+      .scenario:nth-child(4), .scenario:nth-child(5) { grid-column: auto; }
+      .scenarios-wrapper { padding: 24px; }
+
+      /* Other projects */
+      .other-projects { grid-template-columns: 1fr; }
+
+      /* Back to top */
+      #btn-haut { bottom: 24px; right: 24px; width: 46px; height: 46px; }
+    }
+
+    /* Décalage scroll pour compenser le nav fixe */
+    section[id], #s-scenario {
+      scroll-margin-top: 80px;
+    }
+
+    /* =============================================
+       MENU LATÉRAL
+       ============================================= */
+    .side-nav {
+      position: fixed;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .side-nav__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .side-nav__dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(24, 17, 118, 0.2);
+      flex-shrink: 0;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .side-nav__item:hover .side-nav__dot,
+    .side-nav__item.active .side-nav__dot {
+      background: var(--color-bodi-blue);
+      transform: scale(1.3);
+    }
+
+    .side-nav__label {
+      font-size: 11px;
+      font-weight: var(--fw-medium);
+      color: var(--color-bodi-blue);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+      letter-spacing: 0.02em;
+    }
+
+    .side-nav__item:hover .side-nav__label,
+    .side-nav__item.active .side-nav__label {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    @media (max-width: 1024px) {
+      .side-nav { display: none; }
+    }
+
+    /* =============================================
+       ANIMATIONS AU SCROLL
+       ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+    .reveal-delay-4 { transition-delay: 0.48s; }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       NAVIGATION
+       ========================================== -->
+  <header class="nav" role="banner">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="Retour à l'accueil — Sandrine Babineau">Sandrine Babineau</a>
+
+      <!-- Desktop links -->
+      <nav class="nav__links" aria-label="Navigation principale">
+        <a href="apropos.html">À propos</a>
+        <a href="index.html">Projets</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <!-- Hamburger button (tablet/mobile) -->
+      <button
+        class="nav__hamburger"
+        id="hamburger-btn"
+        aria-label="Ouvrir le menu de navigation"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="nav__hamburger-line"></span>
+        <span class="nav__hamburger-line"></span>
+        <span class="nav__hamburger-line"></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <nav class="nav__mobile-menu" id="mobile-menu" aria-label="Navigation mobile">
+      <div class="nav__mobile-links">
+        <a href="apropos.html">À propos</a>
+        <a href="index.html">Projets</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ==========================================
+         HERO — Description BODI
+         ========================================== -->
+    <section class="hero" aria-label="Présentation du projet BODI">
+      <div class="hero__inner">
+        <div class="hero__content">
+          <h1 class="hero__title">BODI</h1>
+          <p class="hero__description">Les aînés veulent rester chez eux. Leurs proches veulent les savoir en sécurité. Ce projet explore comment le design peut soutenir ce lien, sans alourdir le quotidien de personne.</p>
+          <div class="hero__meta" role="list">
+            <div class="hero__meta-item hero__meta-item--chronologie" role="listitem">
+              <span class="hero__meta-label">Chronologie</span>
+              <span class="hero__meta-value">Septembre à décembre 2025</span>
+            </div>
+            <div class="hero__meta-sep" aria-hidden="true"></div>
+            <div class="hero__meta-item hero__meta-item--disciplines" role="listitem">
+              <span class="hero__meta-label">Disciplines</span>
+              <div class="hero__meta-value">
+                <p>Recherche UX</p>
+                <p>Design d'interface</p>
+                <p>Design d'interaction</p>
+              </div>
+            </div>
+            <div class="hero__meta-sep" aria-hidden="true"></div>
+            <div class="hero__meta-item hero__meta-item--equipe" role="listitem">
+              <span class="hero__meta-label">Équipe</span>
+              <div class="hero__meta-value">
+                <p>Sandrine Babineau</p>
+                <p>Frédérique Leblond</p>
+                <p>Scott Ish</p>
+                <p>Maéva Robert</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero__image" aria-hidden="true">
+          <img
+            src="images/bodi/bodi-wall-2.svg"
+            alt="BODI Wall — babillard numérique"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MISE EN CONTEXTE
+         ========================================== -->
+    <section id="s-contexte" class="section section--light" aria-labelledby="contexte-title">
+      <div class="section__inner">
+        <h2 class="section__title" id="contexte-title">Mise en contexte</h2>
+        <p class="section__intro">La population québécoise vieillit et avec ce vieillissement vient une réalité que le système peine à absorber.</p>
+
+        <div class="stats" role="list">
+          <article class="stats__card" role="listitem">
+            <span class="stats__number" aria-label="25 pourcent">25%</span>
+            <p class="stats__text">des Québécois auront 65 ans et plus d'ici 2031</p>
+            <p class="stats__source">Institut de la statistique du Québec, 2025</p>
+          </article>
+          <article class="stats__card" role="listitem">
+            <span class="stats__number" aria-label="71 pourcent">71%</span>
+            <p class="stats__text">des Québécois de 75 ans et plus souhaitent demeurer à domicile</p>
+            <p class="stats__source">SHAW 2022</p>
+          </article>
+          <article class="stats__card" role="listitem">
+            <span class="stats__icon" aria-hidden="true">↑</span>
+            <p class="stats__text">Demande en hausse, places en baisse, coûts en hausse dans les résidences pour aînés</p>
+          </article>
+          <article class="stats__card" role="listitem">
+            <span class="stats__icon" aria-hidden="true">↑</span>
+            <p class="stats__text">Demande en hausse, places en baisse, coûts en hausse dans les résidences pour aînés</p>
+          </article>
+        </div>
+
+        <div class="context-block">
+          <p class="context-block__label">Problème humain</p>
+          <div class="context-block__items">
+            <div class="context-block__item">
+              <div class="context-block__bar" aria-hidden="true"></div>
+              <p class="context-block__text">Le maintien à domicile se complexifie avec le temps, notamment en raison de la perte d'autonomie et des défis liés à la santé et à la sécurité.</p>
+            </div>
+            <div class="context-block__item">
+              <div class="context-block__bar" aria-hidden="true"></div>
+              <p class="context-block__text">Les proches aidants deviennent alors essentiels pour assurer ce soutien, souvent au prix d'une charge mentale importante.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="context-block">
+          <p class="context-block__label">Notre réponse</p>
+          <p class="context-block__response">Concevoir une solution qui renforce le lien entre aînés et proches aidants, sans alourdir le quotidien de personne et sans sacrifier l'autonomie de l'un au profit de la tranquillité de l'autre.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         DÉMARCHE DE RECHERCHE
+         ========================================== -->
+    <section class="section section--light" aria-labelledby="demarche-title">
+      <div class="section__inner">
+        <h2 class="section__title" id="demarche-title">Démarche de recherche</h2>
+        <div class="methods-grid">
+
+          <article class="method-card">
+            <div class="method-card__text">
+              <p class="method-card__title">Entretiens semi-dirigés</p>
+              <p class="method-card__desc">Donner la parole aux aînés et à leurs proches aidants pour explorer leurs besoins quotidiens et révéler des aspects difficilement perceptibles à travers l'observation seule</p>
+            </div>
+            <img class="method-card__icon" src="https://www.figma.com/api/mcp/asset/a005559a-01d2-4c10-8a02-2dc01c3b6eaf" alt="" aria-hidden="true" style="width:52px;height:52px;" />
+          </article>
+
+          <article class="method-card">
+            <div class="method-card__text">
+              <p class="method-card__title">Observation non participante</p>
+              <p class="method-card__desc">Observer le quotidien des aînés et de leurs proches aidants afin d'identifier leurs routines, leurs interactions et les contraintes souvent invisibles</p>
+            </div>
+            <img class="method-card__icon" src="https://www.figma.com/api/mcp/asset/ee5f5353-3325-4423-8c98-c63797da8781" alt="" aria-hidden="true" style="width:52px;height:52px;" />
+          </article>
+
+          <article class="method-card">
+            <div class="method-card__text">
+              <p class="method-card__title">Observation participante</p>
+              <p class="method-card__desc">S'immerger dans leur réalité pour mieux comprendre leur relation, leurs dynamiques et la fréquence de leurs interactions</p>
+            </div>
+            <img class="method-card__icon" src="https://www.figma.com/api/mcp/asset/0d330d34-cce9-46a5-92c8-2bc976365e82" alt="" aria-hidden="true" style="width:52px;height:41px;" />
+          </article>
+
+          <article class="method-card">
+            <div class="method-card__text">
+              <p class="method-card__title">Photographie participative</p>
+              <p class="method-card__desc">Explorer le quotidien des aînés à travers leur propre regard pour révéler des réalités difficiles à exprimer autrement</p>
+            </div>
+            <img class="method-card__icon" src="https://www.figma.com/api/mcp/asset/74ec1c5b-6a4a-44f0-b704-cd7018c65eda" alt="" aria-hidden="true" style="width:50px;height:50px;" />
+          </article>
+
+          <article class="method-card">
+            <div class="method-card__text">
+              <p class="method-card__title">Questionnaire</p>
+              <p class="method-card__desc">Valider et quantifier les tendances observées afin de mieux cerner les besoins et les difficultés vécues.</p>
+            </div>
+            <img class="method-card__icon" src="https://www.figma.com/api/mcp/asset/a5e5fe18-20ac-4087-a12f-883480e37cbf" alt="" aria-hidden="true" style="width:52px;height:40px;" />
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MÉTHODES D'ANALYSE
+         ========================================== -->
+    <section id="s-analyse" class="section section--light" aria-labelledby="analyse-title">
+      <div class="section__inner">
+        <h2 class="section__title" id="analyse-title">Méthodes d'analyse</h2>
+        <p class="section__intro">Afin de faire ressortir des constats de recherche enrichissants, plusieurs méthodes d'analyse ont été utilisées, notamment des diagrammes d'affinité réalisés à la fois sur FigJam et de manière manuelle, permettant ainsi d'aborder les données sous différentes perspectives.</p>
+
+        <div class="analysis-photos">
+          <!-- Left photo with "C'est moi !" annotation -->
+          <div class="analysis-photos__left">
+            <img class="analysis-photos__img analysis-photos__img--small"
+                 src="images/bodi/photo-equipe.png"
+                 alt="Membres de l'équipe travaillant sur un diagramme d'affinité manuel" />
+            <img class="cest-moi"
+                 src="images/bodi/cest-moi.svg"
+                 alt=""
+                 aria-hidden="true" />
+          </div>
+          <!-- Right photo: affinity diagram -->
+          <img class="analysis-photos__img--large"
+               src="images/bodi/photo-affinity.png"
+               alt="Diagramme d'affinité sur tableau blanc avec post-its colorés" />
+        </div>
+
+        <div class="analysis-columns">
+          <div>
+            <h3 class="analysis-col__header">Proches aidants</h3>
+            <div class="analysis-col__cards">
+              <div class="chip chip--purple">« Il faut toujours êtres alerte, tout anticiper, tout prévoir »</div>
+              <div class="chip chip--purple">
+                <strong>Ressentis positifs</strong>
+                <ul>
+                  <li>C'est un geste du cœur d'aider son proche</li>
+                  <li>Importance de redonner à ses parents</li>
+                  <li>Rôle valorisant</li>
+                </ul>
+              </div>
+              <div class="chip chip--purple">
+                <strong>Ressentis négatifs</strong>
+                <ul>
+                  <li>Stress : surcharge émotionnelle, fatigue et incertitude</li>
+                  <li>Gestion du temps + organisation difficile avec son propre horaire</li>
+                  <li>Vulnérabilité du proche crée de l'inquiétude constante</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3 class="analysis-col__header">Aînés</h3>
+            <div class="analysis-col__cards">
+              <div class="chip chip--yellow">« Si tu ne venais pas, je serais toujours seule »</div>
+              <div class="chip chip--yellow">Peurs : perte d'autonomie, isolement, chute et changement</div>
+              <div class="chip chip--yellow">Fragilité physique et cognitive</div>
+              <div class="chip chip--yellow">Attachement envers la routine, la maison et les souvenirs</div>
+            </div>
+          </div>
+          <div>
+            <h3 class="analysis-col__header">Maintien à domicile</h3>
+            <div class="analysis-col__cards">
+              <div class="chip chip--blue">« Tu voudrais-tu t'en aller en résidence ? Ben non, va pas m'en aller là moi, jamais ! »</div>
+              <div class="chip chip--blue">Raisons principales : maintien d'autonomie, confort, routine et ancrage</div>
+              <div class="chip chip--blue">Risques : chute, isolement, oublis et déclin physique et cognitif nécessitant plus d'assistance</div>
+              <div class="chip chip--blue">Stratégies : présence omniprésente du proche aidant, coordination et organisation du quotidien, adaptation de l'environnement, instauration d'une routine</div>
+            </div>
+          </div>
+          <div>
+            <h3 class="analysis-col__header">Technologies existantes</h3>
+            <div class="analysis-col__cards">
+              <div class="chip chip--green">« Les outils doivent être simples, rassurants et adaptés aux besoins des seniors »</div>
+              <div class="chip chip--green">Tablette, téléphone, calendrier et pilulier</div>
+              <div class="chip chip--green">Sécurité : dispositif d'assistance 24h/24, 7 jours/7</div>
+              <div class="chip chip--green">Limites : résistance, méfiance envers la technologie et faible aisance</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         ÉCOSYSTÈME / SCHÉMATISATION DES DONNÉES
+         ========================================== -->
+    <section class="section section--light" aria-labelledby="ecosysteme-title">
+      <div class="section__inner">
+        <div class="ecosystem">
+
+          <!-- Gauche : titre + texte + diagramme synthèse -->
+          <div class="ecosystem__left">
+            <div class="ecosystem__left-header">
+              <h2 class="ecosystem__left-subtitle" id="ecosysteme-title">Schématisation des données</h2>
+              <p class="ecosystem__left-desc">Écosystème réalisé pour schématiser nos constats et comprendre la relation entre les différents acteurs, ainsi que leurs rôles, leurs besoins et leurs ressentis.</p>
+            </div>
+            <img class="ecosystem__synthese"
+                 src="images/bodi/ecosysteme-synthese.svg"
+                 alt="Diagramme d'observations et d'hypothèses — maintien à domicile selon la présence d'un proche aidant" />
+          </div>
+
+          <!-- Droite : écosystème BODI -->
+          <div class="ecosystem__right">
+            <img class="ecosystem__bodi"
+                 src="images/bodi/ecosysteme-bodi.svg"
+                 alt="Écosystème BODI — relations entre l'aîné, le proche aidant et les services externes" />
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         INSIGHTS PRINCIPAUX
+         ========================================== -->
+    <section id="s-insights" class="section section--white" aria-labelledby="insights-title">
+      <div class="section__inner">
+        <h2 class="section__title title--italic" id="insights-title" style="margin-bottom: 48px;"><em>Insights</em> principaux</h2>
+        <div class="insights__grid">
+          <div class="insight">
+            <span class="insight__num" aria-hidden="true">01</span>
+            <p class="insight__text">Le soutien aux aînés repose fortement sur les proches aidants, impliquant une charge physique et émotionnelle élevée.</p>
+          </div>
+          <div class="insight">
+            <span class="insight__num" aria-hidden="true">02</span>
+            <p class="insight__text">Malgré la perte d'autonomie, le maintien à domicile demeure une préférence largement majoritaire chez les aînés.</p>
+          </div>
+          <div class="insight">
+            <span class="insight__num" aria-hidden="true">03</span>
+            <p class="insight__text">L'offre actuelle de solutions technologiques répond peu aux enjeux de coordination entre aînés et proches aidants, tout en tenant compte de leurs capacités numériques.</p>
+          </div>
+          <div class="insight">
+            <span class="insight__num" aria-hidden="true">04</span>
+            <p class="insight__text">Une méfiance envers la technologie persiste, avec une préférence marquée pour des solutions intuitives <span style="white-space: nowrap">et peu intrusives.</span></p>
+          </div>
+          <div class="insight">
+            <span class="insight__num" aria-hidden="true">05</span>
+            <p class="insight__text">La réticence des aînés à solliciter de l'aide complexifie la communication et limite l'expression de leurs besoins réels.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         OBJECTIFS VISÉS PAR LA SOLUTION
+         ========================================== -->
+    <section id="s-ideation" class="section section--light" aria-labelledby="objectifs-title">
+      <div class="section__inner">
+        <h2 class="section__title" id="objectifs-title" style="margin-bottom: 66px;">Objectifs visés par la solution</h2>
+        <div class="objectives" role="list">
+          <article class="objective" role="listitem">
+            <div class="objective__number" aria-hidden="true"><span>1</span></div>
+            <p class="objective__text">Favoriser le maintien à domicile des aînés en soutenant leur autonomie et leur sécurité au quotidien.</p>
+          </article>
+          <article class="objective" role="listitem">
+            <div class="objective__number" aria-hidden="true"><span>2</span></div>
+            <p class="objective__text">Réduire la charge mentale des proches aidants en facilitant le suivi de leurs proches.</p>
+          </article>
+          <article class="objective" role="listitem">
+            <div class="objective__number" aria-hidden="true"><span>3</span></div>
+            <p class="objective__text">Faciliter la communication entre les aînés et leurs proches afin d'améliorer la coordination du quotidien.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         PRINCIPES DE CONCEPTION
+         ========================================== -->
+    <section class="section section--white" aria-labelledby="principes-title">
+      <div class="section__inner">
+        <h2 class="section__title" id="principes-title">Principes de conception</h2>
+        <p class="section__intro">Ils ont servi de fil conducteur nous ont permis d'évaluer nos idées et de nous assurer que la solution répondait aux besoins réels des aînés et de leurs proches aidants.</p>
+        <div class="principles" role="list">
+          <div class="principle chip--yellow" role="listitem">Prendre en compte les limitations liées au vieillissement (vision, audition, motricité, mémoire ou littératie numérique).</div>
+          <div class="principle chip--purple" role="listitem">Soutenir le maintien à domicile sans compromettre l'autonomie des aînés ni leur sentiment d'indépendance.</div>
+          <div class="principle chip--green" role="listitem">S'intégrer naturellement au quotidien des aînés et de leurs proches afin de devenir un outil utile et non une contrainte supplémentaire.</div>
+          <div class="principle chip--blue" role="listitem">Être utile et bénéfique autant pour les aînés que leurs proches.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SOLUTIONS DISCARTÉES
+         ========================================== -->
+    <section class="section section--white" aria-labelledby="solutions-title">
+      <div class="section__inner">
+        <h2 class="section__title" id="solutions-title" style="margin-bottom: 64px;">Solutions discartées</h2>
+
+        <table class="solutions-table" role="table" aria-label="Évaluation des solutions discartées selon les principes de conception">
+          <thead>
+            <tr>
+              <th class="solutions-table__empty-th" scope="col"></th>
+              <th class="solutions-table__col-th solutions-table__col-th--yellow" scope="col">Adaptée à la réalité des aînés</th>
+              <th class="solutions-table__col-th solutions-table__col-th--purple" scope="col">Préserve l'autonomie et la dignité</th>
+              <th class="solutions-table__col-th solutions-table__col-th--green" scope="col">S'intègre naturellement au quotidien</th>
+              <th class="solutions-table__col-th solutions-table__col-th--blue" scope="col">Utile et bénéfique pour les deux parties</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="solution-row__cell">
+                  <img class="solution-row__icon" src="images/bodi/bracelet.svg" alt="" aria-hidden="true" />
+                  <div class="solution-row__info">
+                    <p class="solution-row__title">Bracelet ou collier connecté</p>
+                    <p class="solution-row__desc">Communiquer facilement avec ses proches grâce à un objet porté en permanence</p>
+                  </div>
+                </div>
+              </td>
+              <td class="dot-cell"><span class="dot dot--green" role="img" aria-label="Répond au principe"></span></td>
+              <td class="dot-cell"><span class="dot dot--yellow" role="img" aria-label="Répond partiellement"></span></td>
+              <td class="dot-cell"><span class="dot dot--green" role="img" aria-label="Répond au principe"></span></td>
+              <td class="dot-cell"><span class="dot dot--green" role="img" aria-label="Répond au principe"></span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="solution-row__cell">
+                  <img class="solution-row__icon" src="images/bodi/journal-interactif.svg" alt="" aria-hidden="true" />
+                  <div class="solution-row__info">
+                    <p class="solution-row__title">Journal interactif</p>
+                    <p class="solution-row__desc">Inviter naturellement l'aîné à partager de petits moments de sa journée sans avoir à utiliser un téléphone.</p>
+                  </div>
+                </div>
+              </td>
+              <td class="dot-cell"><span class="dot dot--yellow" role="img" aria-label="Répond partiellement"></span></td>
+              <td class="dot-cell"><span class="dot dot--green" role="img" aria-label="Répond au principe"></span></td>
+              <td class="dot-cell"><span class="dot dot--yellow" role="img" aria-label="Répond partiellement"></span></td>
+              <td class="dot-cell"><span class="dot dot--yellow" role="img" aria-label="Répond partiellement"></span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="solution-row__cell">
+                  <img class="solution-row__icon" src="images/bodi/application-repartition.svg" alt="" aria-hidden="true" />
+                  <div class="solution-row__info">
+                    <p class="solution-row__title">Application : Répartition intelligente des tâches</p>
+                    <p class="solution-row__desc">L'IA attribue les responsabilités aux proches aidants selon leur disponibilité, leur proximité et leurs habitudes.</p>
+                  </div>
+                </div>
+              </td>
+              <td class="dot-cell"><span class="dot dot--green" role="img" aria-label="Répond au principe"></span></td>
+              <td class="dot-cell"><span class="dot dot--green" role="img" aria-label="Répond au principe"></span></td>
+              <td class="dot-cell"><span class="dot dot--yellow" role="img" aria-label="Répond partiellement"></span></td>
+              <td class="dot-cell"><span class="dot dot--yellow" role="img" aria-label="Répond partiellement"></span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="legend" role="list">
+          <p class="legend__title">Légende</p>
+          <div class="legend__item" role="listitem"><span class="dot dot--green" aria-hidden="true"></span> Répond au principe</div>
+          <div class="legend__item" role="listitem"><span class="dot dot--yellow" aria-hidden="true"></span> Répond partiellement</div>
+          <div class="legend__item" role="listitem"><span class="dot dot--red" aria-hidden="true"></span> Ne répond pas</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SOLUTION BODI
+         ========================================== -->
+    <section id="s-solution" class="section section--light" aria-labelledby="solution-bodi-title">
+      <div class="section__inner" style="padding-bottom: 0">
+        <h2 class="section__title" id="solution-bodi-title">Solution BODI</h2>
+        <p class="section__intro">BODI est un écosystème d'appareils connectés par un pod, une application mobile et un babillard numérique qui est conçu pour amener une communication bidirectionnelle en temps réel entre l'aîné et son proche aidant. En centralisant les échanges et l'organisation du quotidien, il soutient à la fois l'autonomie de l'aîné et la coordination du proche aidant.</p>
+
+        <div class="solution-bodi__layout">
+          <!-- Images gauche -->
+          <div class="solution-bodi__visuals">
+            <img class="solution-bodi__wall-img"
+                 src="images/bodi/solution-bodi.svg"
+                 alt="BODI Wall et BODI Pod — écosystème d'appareils connectés" />
+          </div>
+
+          <!-- Descriptions droite -->
+          <div class="solution-bodi__features">
+            <div class="solution-bodi__feature-content">
+              <h3 class="solution-bodi__feature-title">BODI Wall</h3>
+              <p class="solution-bodi__feature-desc">Babillard numérique qui affiche de façon simple et visuelle les informations essentielles de la journée de l'aîné, afin de faciliter son organisation, soutenir son autonomie et maintenir le lien avec ses proches.</p>
+            </div>
+            <div class="solution-bodi__feature-content">
+              <h3 class="solution-bodi__feature-title">BODI Pod</h3>
+              <p class="solution-bodi__feature-desc">Assistant vocal simple et accessible, le pod permet à l'aîné de communiquer ses besoins, recevoir ses rappels et rester connecté sans effort, tout en réduisant les barrières technologiques.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aîné + flèche -->
+        <div class="solution-bodi__footer">
+          <img class="solution-bodi__aine"
+               src="images/bodi/aine.svg"
+               alt="Illustration d'un aîné utilisant BODI" />
+          <svg class="solution-bodi__arrow" width="32" height="42" viewBox="0 0 22 30" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 28V2M2 11L11 2L20 11" stroke="#181176" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+      </div>
+      <div class="solution-bodi__divider" aria-hidden="true"></div>
+    </section>
+
+    <!-- ==========================================
+         BODI APP
+         ========================================== -->
+    <section id="s-app" class="section section--gradient" aria-labelledby="app-title">
+      <div class="section__inner">
+        <div class="app__persona">
+          <img class="app__persona-img"
+               src="images/bodi/proche-aidante.svg"
+               alt="Illustration d'une proche aidante utilisant BODI App" />
+          <svg class="app__persona-arrow" width="32" height="42" viewBox="0 0 22 30" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 2V28M2 19L11 28L20 19" stroke="#181176" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <p class="app__section-label" id="app-title">BODI App</p>
+
+        <div class="app-screens" role="list">
+          <div class="app-screen" role="listitem">
+            <img src="images/bodi/bodi-app-1.svg" alt="Interface Messages de l'application BODI" />
+          </div>
+          <div class="app-screen" role="listitem">
+            <img src="images/bodi/bodi-app-2.svg" alt="Interface Calendrier de l'application BODI" />
+          </div>
+          <div class="app-screen" role="listitem">
+            <img src="images/bodi/bodi-app-3.svg" alt="Interface Tâches de l'application BODI" />
+          </div>
+          <div class="app-screen" role="listitem">
+            <img src="images/bodi/bodi-app-4.svg" alt="Interface Conseils IA de l'application BODI" />
+          </div>
+        </div>
+
+        <div class="app__divider" aria-hidden="true"></div>
+
+        <div class="app-features">
+          <div>
+            <h3 class="app-feature__title">Messages</h3>
+            <p class="app-feature__desc">Les messages de l'aîné sont transmis par écrit depuis une commande vocale donnée au BODI pod.<br><br>Le proche aidant peut répondre ou appeler l'aîné en FaceTime via son téléphone.</p>
+          </div>
+          <div>
+            <h3 class="app-feature__title">Calendrier</h3>
+            <p class="app-feature__desc">Planification des journées avec événements et rappels à distance.<br><br>Les informations du jour sont affichées au babillard et transmises par le pod.</p>
+          </div>
+          <div>
+            <h3 class="app-feature__title">Tâches</h3>
+            <p class="app-feature__desc">Création de rappels et listes pour organiser le quotidien à l'avance et éviter les oublis.</p>
+          </div>
+          <div>
+            <h3 class="app-feature__title">Conseils IA</h3>
+            <p class="app-feature__desc">Recommandations personnalisées basées sur les échanges avec l'aîné.<br><br>Possibilité de poser des questions à l'IA.</p>
+          </div>
+        </div>
+
+        <div id="s-scenario" class="scenarios-wrapper">
+        <h3 class="scenario__title">Scénario d'utilisation</h3>
+        <div class="scenarios" role="list">
+          <article class="scenario" role="listitem">
+            <div class="scenario__img-wrapper">
+              <img src="images/bodi/scenario-01.svg" alt="Étape 1 du scénario : l'aîné parle au BODI Pod" />
+            </div>
+            <p class="scenario__text"><strong>01</strong> L'aîné informe le BODI Pod qu'il a besoin de renouveler sa médication rapidement.</p>
+          </article>
+          <article class="scenario" role="listitem">
+            <div class="scenario__img-wrapper">
+              <img src="images/bodi/scenario-02.svg" alt="Étape 2 du scénario : le BODI Pod enregistre la demande" />
+            </div>
+            <p class="scenario__text"><strong>02</strong> Le BODI Pod enregistre le besoin et envoie une notification à l'application du proche aidant.</p>
+          </article>
+          <article class="scenario" role="listitem">
+            <div class="scenario__img-wrapper">
+              <img src="images/bodi/scenario-03.svg" alt="Étape 3 du scénario : le proche aidant reçoit la notification" />
+            </div>
+            <p class="scenario__text"><strong>03</strong> Le proche aidant reçoit la demande et confirme par message qu'il s'en occupera dans la journée.</p>
+          </article>
+          <article class="scenario" role="listitem">
+            <div class="scenario__img-wrapper">
+              <img src="images/bodi/scenario-04.svg" alt="Étape 4 du scénario : le message est transmis à l'application" />
+            </div>
+            <p class="scenario__text"><strong>04</strong> Le message du proche aidant est transmis au BODI APP et au BODI Wall dans la maison de l'aîné.</p>
+          </article>
+          <article class="scenario" role="listitem">
+            <div class="scenario__img-wrapper">
+              <img src="images/bodi/scenario-05.svg" alt="Étape 5 du scénario : le BODI Pod transmet oralement le message à l'aîné" />
+            </div>
+            <p class="scenario__text"><strong>05</strong> Le BODI Pod et le BODI Wall transmettent le message à l'aîné, oralement et visuellement.</p>
+          </article>
+        </div>
+        </div><!-- /scenarios-wrapper -->
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BÉNÉFICES DE LA SOLUTION
+         ========================================== -->
+    <section id="s-benefices" class="section section--light" aria-labelledby="benefices-title">
+      <div class="section__inner">
+        <h2 class="scenario__title" id="benefices-title">Bénéfices de la solution</h2>
+
+        <div class="benefits">
+          <article class="benefit-card" aria-label="Bénéfices pour les aînés">
+            <div class="benefit-card__header">
+              <span class="benefit-card__arrow" aria-hidden="true">→</span>
+              <h3 class="benefit-card__header-title">Pour les aînés</h3>
+            </div>
+            <div class="benefit-item">
+              <p class="benefit-item__title">Autonomie ↑</p>
+              <p class="benefit-item__desc">Accès simple aux informations importantes et aux rappels du quotidien</p>
+            </div>
+            <div class="benefit-item">
+              <p class="benefit-item__title">Sentiment de sécurité ↑</p>
+              <p class="benefit-item__desc">Échanges faciles et des proches plus facilement joignables sans avoir besoin d'appeler</p>
+            </div>
+            <div class="benefit-item">
+              <p class="benefit-item__title">Sérénité ↑</p>
+              <p class="benefit-item__desc">Se sentir soutenus lorsqu'ils en ont besoin tout en conservant leur indépendance</p>
+            </div>
+          </article>
+          <article class="benefit-card" aria-label="Bénéfices pour les proches aidants">
+            <div class="benefit-card__header">
+              <span class="benefit-card__arrow" aria-hidden="true">→</span>
+              <h3 class="benefit-card__header-title">Pour les proches aidants</h3>
+            </div>
+            <div class="benefit-item">
+              <p class="benefit-item__title">Charge mentale ↓</p>
+              <p class="benefit-item__desc">Suivi centralisé, rappels partagés et recommandations intelligentes</p>
+            </div>
+            <div class="benefit-item">
+              <p class="benefit-item__title">Communication ↑</p>
+              <p class="benefit-item__desc">Échanges bidirectionnels en temps réel, par message ou commande vocale</p>
+            </div>
+            <div class="benefit-item">
+              <p class="benefit-item__title">Organisation ↑</p>
+              <p class="benefit-item__desc">Calendrier partagé, gestion des tâches et espace familial multi-profils</p>
+            </div>
+            <div class="benefit-item">
+              <p class="benefit-item__title">Tranquillité d'esprit ↑</p>
+              <p class="benefit-item__desc">Vision d'ensemble sur le quotidien de l'aîné, sans vérifications constantes</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="benefits-principles" role="list">
+          <div class="benefits-principles__item chip--yellow" role="listitem">
+            <span class="benefits-principles__check" aria-label="Principe satisfait">✓</span>
+            Adaptée à la réalité des aînés
+          </div>
+          <div class="benefits-principles__item chip--purple" role="listitem">
+            <span class="benefits-principles__check" aria-label="Principe satisfait">✓</span>
+            Préserve l'autonomie et la dignité
+          </div>
+          <div class="benefits-principles__item chip--green" role="listitem">
+            <span class="benefits-principles__check" aria-label="Principe satisfait">✓</span>
+            S'intègre naturellement au quotidien
+          </div>
+          <div class="benefits-principles__item chip--blue" role="listitem">
+            <span class="benefits-principles__check" aria-label="Principe satisfait">✓</span>
+            Utile et bénéfique pour les deux parties
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         UTILISATION DE L'IA
+         ========================================== -->
+    <section id="s-ia" class="section section--white" aria-labelledby="ia-title">
+      <div class="section__inner">
+        <h2 class="section__title" id="ia-title" style="margin-bottom: 77px;">Utilisation de l'intelligence artificielle</h2>
+        <div class="ia-list">
+          <div class="ia-item">
+            <span class="ia-item__num" aria-hidden="true">01</span>
+            <div class="ia-item__content">
+              <p class="ia-item__title">Recherche documentaire — Elicit</p>
+              <p class="ia-item__desc">Aide à la recherche documentaire sur la problématique</p>
+            </div>
+          </div>
+          <div class="ia-item">
+            <span class="ia-item__num" aria-hidden="true">02</span>
+            <div class="ia-item__content">
+              <p class="ia-item__title">Entrevues semi-dirigées — NotebookLM</p>
+              <p class="ia-item__desc">Transcription des enregistrements et extractions de constats pertinents</p>
+            </div>
+          </div>
+          <div class="ia-item">
+            <span class="ia-item__num" aria-hidden="true">03</span>
+            <div class="ia-item__content">
+              <p class="ia-item__title">Analyse — FigJam AI</p>
+              <p class="ia-item__desc">Aide dans le regroupement des données ethnographiques</p>
+            </div>
+          </div>
+          <div class="ia-item">
+            <span class="ia-item__num" aria-hidden="true">04</span>
+            <div class="ia-item__content">
+              <p class="ia-item__title">Prototypage — Gemini, Figma make et Figma Design</p>
+              <p class="ia-item__desc">Aide à la conception et la création de mockups et d'interfaces utiles à la représentation des solutions</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         DÉCOUVRIR D'AUTRES PROJETS
+         ========================================== -->
+    <section class="section section--white" aria-labelledby="autres-title">
+      <div class="section__inner">
+        <h2 class="section__title section__title--black" id="autres-title" style="margin-bottom: 48px;">Découvrir d'autres projets</h2>
+        <div class="other-projects">
+          <a href="#" class="project-card" aria-label="Voir le projet Naître et Grandir +">
+            <div class="project-card__img-wrapper">
+              <img src="images/projet2.png" alt="Aperçu du projet Naître et Grandir +" />
+            </div>
+            <div class="project-card__body">
+              <h3 class="project-card__title">Naître et Grandir +</h3>
+              <p class="project-card__desc">Assistant intelligent de Naître et Grandir visant à centraliser l'information périnatale et à accompagner les parents à chaque étape de la parentalité</p>
+              <div class="tags">
+                <span class="tag tag--rose">Design UX</span>
+                <span class="tag tag--bleu">Design UI</span>
+                <span class="tag tag--orange">Recherche utilisateur</span>
+                <span class="tag tag--violet">Design de service</span>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="project-card" aria-label="Voir le projet Desjardins">
+            <div class="project-card__img-wrapper">
+              <img src="images/projet1.png" alt="Aperçu du projet Desjardins" />
+            </div>
+            <div class="project-card__body">
+              <h3 class="project-card__title">Desjardins</h3>
+              <p class="project-card__desc">Améliorer l'intégration et la visibilité de l'offre immobilière de Desjardins au sein de son écosystème financier numérique.</p>
+              <div class="tags">
+                <span class="tag tag--rose">Design UX</span>
+                <span class="tag tag--bleu">Design UI</span>
+                <span class="tag tag--orange">Recherche UX</span>
+                <span class="tag tag--vert">Architecture d'information</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         CONTACT
+         ========================================== -->
+    <section class="section section--white" id="contact" aria-labelledby="contact-title">
+      <div class="section__inner">
+        <div class="contact__border">
+          <h2 class="contact__title" id="contact-title">Curieux d'en savoir plus ?</h2>
+          <div class="contact__line" aria-hidden="true"></div>
+          <address class="contact__coords" style="font-style: normal;">
+            <a href="mailto:sandrine.babineau@videotron.ca">sandrine.babineau@videotron.ca</a> | <a href="tel:+14189563771">(418) 956-3771</a>
+          </address>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MENU LATÉRAL -->
+  <nav class="side-nav" aria-label="Navigation par section">
+    <a class="side-nav__item" href="#s-contexte">
+      <span class="side-nav__dot"></span>
+      <span class="side-nav__label">Contexte</span>
+    </a>
+    <a class="side-nav__item" href="#s-analyse">
+      <span class="side-nav__dot"></span>
+      <span class="side-nav__label">Analyse</span>
+    </a>
+    <a class="side-nav__item" href="#s-insights">
+      <span class="side-nav__dot"></span>
+      <span class="side-nav__label">Insights</span>
+    </a>
+    <a class="side-nav__item" href="#s-ideation">
+      <span class="side-nav__dot"></span>
+      <span class="side-nav__label">Processus d'idéation</span>
+    </a>
+    <a class="side-nav__item" href="#s-solution">
+      <span class="side-nav__dot"></span>
+      <span class="side-nav__label">Solution BODI</span>
+    </a>
+    <a class="side-nav__item" href="#s-scenario">
+      <span class="side-nav__dot"></span>
+      <span class="side-nav__label">Scénario d'utilisation</span>
+    </a>
+    <a class="side-nav__item" href="#s-benefices">
+      <span class="side-nav__dot"></span>
+      <span class="side-nav__label">Bénéfices</span>
+    </a>
+    <a class="side-nav__item" href="#s-ia">
+      <span class="side-nav__dot"></span>
+      <span class="side-nav__label">IA</span>
+    </a>
+    <a class="side-nav__item" href="#contact">
+      <span class="side-nav__dot"></span>
+      <span class="side-nav__label">Contact</span>
+    </a>
+  </nav>
+
+  <!-- ==========================================
+       BOUTON RETOUR EN HAUT
+       ========================================== -->
+  <button
+    id="btn-haut"
+    onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    aria-label="Retour en haut de la page"
+    title="Retour en haut"
+  >
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M10 16V4M4 10l6-6 6 6" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <script>
+    // =============================================
+    // HAMBURGER MENU
+    // =============================================
+    (function () {
+      var btn  = document.getElementById('hamburger-btn');
+      var menu = document.getElementById('mobile-menu');
+
+      btn.addEventListener('click', function () {
+        var isOpen = menu.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        btn.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu de navigation');
+      });
+
+      // Close menu on link click
+      menu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          menu.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      // Close menu on resize back to desktop
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 1024) {
+          menu.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
+
+    // =============================================
+    // BACK TO TOP
+    // =============================================
+    (function () {
+      var btn = document.getElementById('btn-haut');
+      window.addEventListener('scroll', function () {
+        btn.classList.toggle('visible', window.scrollY > 400);
+      }, { passive: true });
+    })();
+  </script>
+
+  <!-- ==========================================
+       ANIMATION AU SCROLL
+       ========================================== -->
+  <script>
+    // =============================================
+    // MENU LATÉRAL — section active
+    // =============================================
+    (function () {
+      var sections = ['s-contexte','s-analyse','s-insights','s-ideation','s-solution','s-scenario','s-benefices','s-ia','contact'];
+      var items = document.querySelectorAll('.side-nav__item');
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var id = entry.target.id;
+            items.forEach(function (item) {
+              item.classList.toggle('active', item.getAttribute('href') === '#' + id);
+            });
+          }
+        });
+      }, { threshold: 0.3 });
+
+      sections.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    })();
+
+    (function () {
+      var animObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            animObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      function revele(el, delai) {
+        el.classList.add('reveal');
+        if (delai) el.classList.add('reveal-delay-' + delai);
+        animObserver.observe(el);
+      }
+
+      // Titres et intros de section
+      document.querySelectorAll(
+        '.section__title, .scenario__title, .section__intro, ' +
+        '.hero__title, .hero__description, .hero__meta, .hero__image'
+      ).forEach(function (el) { revele(el); });
+
+      // Blocs individuels
+      [
+        '.solution-bodi__layout',
+        '.analysis-photos',
+        '.solutions-table',
+        '.benefits-principles',
+        '.app-features',
+        '.contact__border',
+        '.solution-bodi__divider',
+      ].forEach(function (sel) {
+        document.querySelectorAll(sel).forEach(function (el) { revele(el); });
+      });
+
+      // Grilles : chaque enfant apparaît en cascade
+      [
+        '.stats',
+        '.insights__grid',
+        '.objectives',
+        '.scenarios',
+        '.other-projects',
+        '.benefits',
+        '.ia-list',
+        '.app-screens',
+        '.ecosystem__right',
+      ].forEach(function (sel) {
+        var container = document.querySelector(sel);
+        if (!container) return;
+        Array.from(container.children).forEach(function (child, i) {
+          revele(child, i > 0 ? Math.min(i, 4) : null);
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
